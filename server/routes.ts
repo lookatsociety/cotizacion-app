@@ -56,7 +56,7 @@ const configurePassport = (app: Express) => {
           clientSecret: process.env.GOOGLE_CLIENT_SECRET,
           callbackURL: "/api/auth/google/callback",
         },
-        async (accessToken, refreshToken, profile, done) => {
+        async (accessToken: string, refreshToken: string, profile: GoogleStrategy.Profile, done: (error: any, user?: any) => void) => {
           try {
             // Check if user exists
             let user = await storage.getUserByGoogleId(profile.id);
