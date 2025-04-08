@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/card";
 import { AlertCircle } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import spekLogo from "../assets/spek_logo.png";
+import SpekLogo from "../components/SpekLogo";
 
 export default function Login() {
   const { googleLogin, isAuthenticated, isLoading } = useAuth();
@@ -43,11 +43,10 @@ export default function Login() {
         <div className="absolute inset-0 bg-gradient-to-tr from-gray-900 to-black opacity-70"></div>
         
         <CardHeader className="relative z-10 space-y-2 flex flex-col items-center pt-8 pb-2">
-          <img 
-            src={spekLogo} 
-            alt="SPEK Industrial" 
-            className="w-48 h-auto mb-4"
-          />
+          <div className="w-64 mb-6 relative">
+            <SpekLogo className="w-full h-auto" />
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white to-transparent opacity-10 animate-pulse"></div>
+          </div>
           <CardTitle className="text-2xl font-light tracking-wider text-white">
             COTIZACIONES
           </CardTitle>
