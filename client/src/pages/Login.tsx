@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useLocation } from "wouter";
 import { useAuth } from "@/lib/auth";
 import { Button } from "@/components/ui/button";
@@ -9,11 +9,13 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { File } from "lucide-react";
+import { File, AlertCircle } from "lucide-react";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 export default function Login() {
   const { googleLogin, isAuthenticated, isLoading } = useAuth();
   const [, setLocation] = useLocation();
+  const [authError, setAuthError] = useState<string | null>(null);
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -22,7 +24,14 @@ export default function Login() {
   }, [isAuthenticated, setLocation]);
 
   const handleGoogleLogin = async () => {
-    await googleLogin();
+    setAuthError(null);
+    try {
+      await googleLogin();
+    } catch (error: any) {
+      if (error.code === 'auth/unauthorized-domain' || error.code === 'auth/operation-not-allowed') {
+        setAuthError("El dominio de esta aplicación no está autorizado en la configuración de Firebase. Por favor, añade este dominio a la lista de dominios autorizados en la configuración de Firebase.");
+      }
+    }
   };
 
   return (
@@ -41,6 +50,23 @@ export default function Login() {
           <p className="text-center text-sm text-gray-600 mb-4">
             Utiliza tu cuenta de Google para iniciar sesión de forma rápida y segura.
           </p>
+          
+          <Alert className="mb-4">
+            <AlertCircle className="h-4 w-4" />
+            <AlertTitle>Información importante</AlertTitle>
+            <AlertDescription className="mt-2 text-sm">
+              Para que la autenticación funcione correctamente, asegúrate de añadir el dominio de Replit <code>{window.location.origin}</code> a la lista de dominios autorizados en la consola de Firebase (Autenticación &gt; Sign-in method &gt; Dominios autorizados).
+            </AlertDescription>
+          </Alert>
+          
+          {authError && (
+            <Alert variant="destructive" className="mb-4">
+              <AlertCircle className="h-4 w-4" />
+              <AlertDescription className="mt-2 text-sm">
+                {authError}
+              </AlertDescription>
+            </Alert>
+          )}
           
           <Button 
             className="w-full flex items-center justify-center gap-2" 

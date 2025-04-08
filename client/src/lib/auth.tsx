@@ -3,7 +3,8 @@ import {
   signInWithPopup, 
   signOut, 
   onAuthStateChanged, 
-  User as FirebaseUser 
+  User as FirebaseUser,
+  UserCredential
 } from "firebase/auth";
 import { auth, googleProvider } from "./firebase";
 import { queryClient, apiRequest } from "./queryClient";
@@ -20,7 +21,7 @@ interface AuthContextType {
   user: User | null;
   isAuthenticated: boolean;
   isLoading: boolean;
-  googleLogin: () => Promise<void>;
+  googleLogin: () => Promise<UserCredential | void>;
   logout: () => Promise<void>;
 }
 
@@ -59,14 +60,38 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const googleLogin = async () => {
     try {
       setIsLoading(true);
-      await signInWithPopup(auth, googleProvider);
-    } catch (error) {
+      const result = await signInWithPopup(auth, googleProvider);
+      
+      // Esto ayuda a depurar
+      console.log("Login exitoso:", result.user);
+      
+      toast({
+        title: "Inicio de sesión exitoso",
+        description: `Bienvenido${result.user.displayName ? ', ' + result.user.displayName : ''}`,
+      });
+      
+      return result;
+    } catch (error: any) {
       console.error("Error al iniciar sesión con Google:", error);
+      
+      // Mensajes de error más específicos
+      let errorMessage = "No se pudo iniciar sesión con Google";
+      
+      if (error.code === 'auth/popup-closed-by-user') {
+        errorMessage = "Ventana de inicio de sesión cerrada. Intenta nuevamente.";
+      } else if (error.code === 'auth/cancelled-popup-request') {
+        errorMessage = "Solicitud cancelada. Intenta nuevamente.";
+      } else if (error.code === 'auth/popup-blocked') {
+        errorMessage = "La ventana emergente fue bloqueada por el navegador. Permite ventanas emergentes e intenta nuevamente.";
+      }
+      
       toast({
         title: "Error de inicio de sesión",
-        description: "No se pudo iniciar sesión con Google",
+        description: errorMessage,
         variant: "destructive",
       });
+      
+      throw error;
     } finally {
       setIsLoading(false);
     }
