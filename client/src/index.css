@@ -98,6 +98,19 @@
     @apply flex items-center justify-center w-16 h-16 border border-dashed border-gray-300 rounded-md hover:bg-gray-50 cursor-pointer;
   }
   
+  .box-ghost-glow {
+    box-shadow: 0 0 10px 2px rgba(255, 255, 255, 0.2),
+                0 0 20px 5px rgba(255, 255, 255, 0.1),
+                0 0 30px 8px rgba(255, 255, 255, 0.05);
+    transition: all 0.3s ease;
+  }
+  
+  .box-ghost-glow:hover {
+    box-shadow: 0 0 15px 3px rgba(255, 255, 255, 0.3),
+                0 0 30px 8px rgba(255, 255, 255, 0.15),
+                0 0 45px 12px rgba(255, 255, 255, 0.08);
+  }
+  
   .badge {
     @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium;
   }

@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/card";
 import { AlertCircle } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import spekLogoPath from "../assets/spek-logo.jpg";
+import spekLogoPath from "@assets/IMG-20250408-WA0063.jpg";
 
 export default function Login() {
   const { googleLogin, isAuthenticated, isLoading } = useAuth();
@@ -39,7 +39,7 @@ export default function Login() {
     <div className="flex items-center justify-center min-h-screen bg-black">
       {/* Pure black background to match logo */}
       
-      <Card className="w-full max-w-md border-2 border-white shadow-2xl bg-black relative z-10 overflow-hidden rounded-xl">
+      <Card className="w-full max-w-md border-2 border-white/80 shadow-2xl bg-black relative z-10 overflow-hidden rounded-xl box-ghost-glow">
         {/* No background gradient to match with the logo's pure black */}
         
         <CardHeader className="relative z-10 space-y-2 flex flex-col items-center pt-8 pb-2">
