@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/card";
 import { AlertCircle } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import SpekLogoTransparent from "../components/SpekLogoTransparent";
+import spekLogoPath from "../assets/spek-logo.jpg";
 
 export default function Login() {
   const { googleLogin, isAuthenticated, isLoading } = useAuth();
@@ -37,14 +37,14 @@ export default function Login() {
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-black">
-      <div className="absolute inset-0 bg-gradient-to-br from-black via-gray-900 to-black z-0"></div>
+      {/* Pure black background to match logo */}
       
-      <Card className="w-full max-w-md border-0 shadow-2xl bg-black relative z-10 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-tr from-gray-900 to-black opacity-70"></div>
+      <Card className="w-full max-w-md border-2 border-white shadow-2xl bg-black relative z-10 overflow-hidden rounded-xl">
+        {/* No background gradient to match with the logo's pure black */}
         
         <CardHeader className="relative z-10 space-y-2 flex flex-col items-center pt-8 pb-2">
-          <div className="w-64 mb-6 relative">
-            <SpekLogoTransparent className="w-full h-auto" />
+          <div className="flex justify-center mb-6 relative">
+            <img src={spekLogoPath} alt="SPEK Industrial" className="h-auto max-w-[220px]" />
           </div>
           <CardTitle className="text-2xl font-light tracking-wider text-white">
             COTIZACIONES
