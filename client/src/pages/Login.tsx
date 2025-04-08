@@ -42,7 +42,7 @@ export default function Login() {
       <Card className="w-full max-w-md border-2 border-white/80 shadow-2xl bg-black relative z-10 overflow-hidden rounded-xl box-ghost-glow bg-moving-clouds">
         {/* No background gradient to match with the logo's pure black */}
         
-        <CardHeader className="relative z-10 space-y-2 flex flex-col items-center pt-8 pb-2">
+        <CardHeader className="relative z-20 space-y-2 flex flex-col items-center pt-8 pb-2">
           <div className="flex justify-center mb-6 relative">
             <img src={spekLogoPath} alt="SPEK Industrial" className="h-auto max-w-[220px]" />
           </div>
@@ -54,7 +54,7 @@ export default function Login() {
           </CardDescription>
         </CardHeader>
         
-        <CardContent className="relative z-10 space-y-6 pt-4">
+        <CardContent className="relative z-20 space-y-6 pt-4">
           {authError && (
             <Alert variant="destructive" className="bg-red-900/50 border-red-800 text-white">
               <AlertCircle className="h-4 w-4" />
@@ -106,7 +106,7 @@ export default function Login() {
           </div>
         </CardContent>
         
-        <CardFooter className="relative z-10 flex justify-center pt-2 pb-8 text-xs text-gray-500">
+        <CardFooter className="relative z-20 flex justify-center pt-2 pb-8 text-xs text-gray-500">
           © {new Date().getFullYear()} SPEK Industrial
         </CardFooter>
       </Card>
