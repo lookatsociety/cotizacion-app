@@ -99,17 +99,17 @@
   }
   
   .box-ghost-glow {
-    box-shadow: 0 0 30px 6px rgba(255, 255, 255, 0.8),
-                0 0 60px 15px rgba(255, 255, 255, 0.5),
-                0 0 90px 20px rgba(255, 255, 255, 0.3);
+    box-shadow: 0 0 20px 4px rgba(255, 255, 255, 0.6),
+                0 0 40px 10px rgba(255, 255, 255, 0.3),
+                0 0 60px 15px rgba(255, 255, 255, 0.15);
     transition: all 0.3s ease;
     animation: pulse-glow 3s infinite alternate;
   }
   
   .box-ghost-glow:hover {
-    box-shadow: 0 0 35px 8px rgba(255, 255, 255, 0.9),
-                0 0 70px 18px rgba(255, 255, 255, 0.6),
-                0 0 105px 25px rgba(255, 255, 255, 0.4);
+    box-shadow: 0 0 25px 5px rgba(255, 255, 255, 0.7),
+                0 0 50px 12px rgba(255, 255, 255, 0.4),
+                0 0 75px 18px rgba(255, 255, 255, 0.2);
   }
   
   .bg-moving-clouds {
@@ -198,14 +198,14 @@
   
   @keyframes pulse-glow {
     0% {
-      box-shadow: 0 0 30px 6px rgba(255, 255, 255, 0.7),
-                  0 0 60px 15px rgba(255, 255, 255, 0.4),
-                  0 0 90px 25px rgba(255, 255, 255, 0.2);
+      box-shadow: 0 0 15px 3px rgba(255, 255, 255, 0.5),
+                  0 0 30px 8px rgba(255, 255, 255, 0.25),
+                  0 0 45px 12px rgba(255, 255, 255, 0.1);
     }
     100% {
-      box-shadow: 0 0 35px 8px rgba(255, 255, 255, 0.8),
-                  0 0 70px 18px rgba(255, 255, 255, 0.5),
-                  0 0 105px 30px rgba(255, 255, 255, 0.3);
+      box-shadow: 0 0 18px 4px rgba(255, 255, 255, 0.6),
+                  0 0 36px 10px rgba(255, 255, 255, 0.3),
+                  0 0 54px 15px rgba(255, 255, 255, 0.15);
     }
   }
   
