@@ -36,10 +36,10 @@ export default function Login() {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-black">
-      {/* Pure black background to match logo */}
+    <div className="flex items-center justify-center min-h-screen bg-black relative bg-moving-clouds">
+      {/* Fondo con efecto de nubes/degradado */}
       
-      <Card className="w-full max-w-md border-2 border-white/80 shadow-2xl bg-black relative z-10 overflow-hidden rounded-xl box-ghost-glow bg-moving-clouds">
+      <Card className="w-full max-w-md border-2 border-white/80 shadow-2xl bg-black relative z-10 overflow-hidden rounded-xl box-ghost-glow">
         {/* No background gradient to match with the logo's pure black */}
         
         <CardHeader className="relative z-20 space-y-2 flex flex-col items-center pt-8 pb-2">
