@@ -36,29 +36,29 @@ export default function Login() {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-black relative bg-moving-clouds">
+    <div className="flex items-center justify-center min-h-screen bg-black relative bg-moving-clouds px-4 py-6 sm:px-6">
       {/* Fondo con efecto de nubes/degradado */}
       
-      <Card className="w-full max-w-md border-2 border-white/80 shadow-2xl bg-black relative z-10 overflow-hidden rounded-xl box-ghost-glow">
+      <Card className="w-full max-w-[90%] sm:max-w-md border-2 border-white/80 shadow-2xl bg-black relative z-10 overflow-hidden rounded-xl box-ghost-glow">
         {/* No background gradient to match with the logo's pure black */}
         
-        <CardHeader className="relative z-20 space-y-2 flex flex-col items-center pt-8 pb-2">
-          <div className="flex justify-center mb-6 relative">
-            <img src={spekLogoPath} alt="SPEK Industrial" className="h-auto max-w-[220px]" />
+        <CardHeader className="relative z-20 space-y-2 flex flex-col items-center pt-6 sm:pt-8 pb-2">
+          <div className="flex justify-center mb-4 sm:mb-6 relative">
+            <img src={spekLogoPath} alt="SPEK Industrial" className="h-auto max-w-[180px] sm:max-w-[220px]" />
           </div>
-          <CardTitle className="text-2xl font-light tracking-wider text-white">
+          <CardTitle className="text-xl sm:text-2xl font-light tracking-wider text-white">
             COTIZACIONES
           </CardTitle>
-          <CardDescription className="text-gray-400">
+          <CardDescription className="text-sm sm:text-base text-gray-400">
             Sistema de gestión de cotizaciones
           </CardDescription>
         </CardHeader>
         
-        <CardContent className="relative z-20 space-y-6 pt-4">
+        <CardContent className="relative z-20 space-y-4 sm:space-y-6 pt-2 sm:pt-4 px-4 sm:px-6">
           {authError && (
-            <Alert variant="destructive" className="bg-red-900/50 border-red-800 text-white">
-              <AlertCircle className="h-4 w-4" />
-              <AlertDescription className="mt-1 text-sm">
+            <Alert variant="destructive" className="bg-red-900/50 border-red-800 text-white text-xs sm:text-sm">
+              <AlertCircle className="h-3 w-3 sm:h-4 sm:w-4" />
+              <AlertDescription className="mt-1 text-xs sm:text-sm">
                 {authError}
               </AlertDescription>
             </Alert>
@@ -66,14 +66,14 @@ export default function Login() {
           
           <div className="flex justify-center">
             <Button 
-              className="w-full max-w-xs bg-white hover:bg-gray-100 text-black rounded-md flex items-center justify-center gap-2 transition-all duration-300 shadow-md hover:shadow-xl" 
+              className="w-full max-w-full sm:max-w-xs bg-white hover:bg-gray-100 text-black text-xs sm:text-sm rounded-md flex items-center justify-center gap-2 transition-all duration-300 shadow-md hover:shadow-xl py-2 sm:py-3" 
               onClick={handleGoogleLogin}
               disabled={isLoading}
               variant="outline"
             >
               {isLoading ? (
                 <span className="flex items-center gap-2">
-                  <svg className="animate-spin h-4 w-4 text-gray-800" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <svg className="animate-spin h-3 w-3 sm:h-4 sm:w-4 text-gray-800" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                     <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                     <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                   </svg>
@@ -81,7 +81,7 @@ export default function Login() {
                 </span>
               ) : (
                 <>
-                  <svg className="h-4 w-4" viewBox="0 0 24 24">
+                  <svg className="h-3 w-3 sm:h-4 sm:w-4" viewBox="0 0 24 24">
                     <path
                       d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
                       fill="#4285F4"
@@ -106,7 +106,7 @@ export default function Login() {
           </div>
         </CardContent>
         
-        <CardFooter className="relative z-20 flex justify-center pt-2 pb-8 text-xs text-gray-500">
+        <CardFooter className="relative z-20 flex justify-center pt-2 pb-6 sm:pb-8 text-[10px] sm:text-xs text-gray-500">
           © {new Date().getFullYear()} SPEK Industrial
         </CardFooter>
       </Card>

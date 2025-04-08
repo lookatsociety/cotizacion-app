@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useLocation } from "wouter";
 import { useAuth } from "@/lib/auth";
 import { 
@@ -13,8 +13,11 @@ import {
   ChevronDown, 
   LogOut, 
   Moon, 
-  Sun
+  Sun,
+  Menu,
+  X
 } from "lucide-react";
+import { useIsMobile } from "@/hooks/use-mobile";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useToast } from "@/hooks/use-toast";
@@ -28,6 +31,26 @@ export default function SidebarLayout({ children }: SidebarLayoutProps) {
   const { user, logout } = useAuth();
   const { toast } = useToast();
   const [isDarkMode, setIsDarkMode] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const isMobile = useIsMobile();
+
+  // Close sidebar when changing routes on mobile
+  useEffect(() => {
+    if (isMobile) {
+      setSidebarOpen(false);
+    }
+  }, [location, isMobile]);
+
+  // Set sidebar to always open on desktop
+  useEffect(() => {
+    if (!isMobile) {
+      setSidebarOpen(true);
+    }
+  }, [isMobile]);
+
+  const toggleSidebar = () => {
+    setSidebarOpen(!sidebarOpen);
+  };
 
   const handleLogout = async () => {
     try {
@@ -60,15 +83,71 @@ export default function SidebarLayout({ children }: SidebarLayoutProps) {
   };
 
   return (
-    <div className="flex h-screen overflow-hidden">
-      {/* Sidebar */}
-      <div className="bg-white w-64 shadow-md flex flex-col border-r border-gray-200 flex-shrink-0">
-        <div className="p-4 border-b border-gray-200 flex items-center space-x-3">
-          <div className="w-8 h-8 rounded-md flex items-center justify-center bg-primary-600 text-white">
-            <FileText size={18} />
+    <div className="flex h-screen overflow-hidden bg-gray-50">
+      {/* Mobile Header */}
+      {isMobile && (
+        <div className="fixed top-0 left-0 right-0 h-14 bg-white border-b border-gray-200 flex items-center justify-between px-4 z-30">
+          <div className="flex items-center space-x-3">
+            <div className="w-7 h-7 rounded-md flex items-center justify-center bg-primary-600 text-white">
+              <FileText size={16} />
+            </div>
+            <span className="text-lg font-semibold text-neutral-800">CotizaApp</span>
           </div>
-          <span className="text-xl font-semibold text-neutral-800">CotizaApp</span>
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={toggleSidebar}
+            className="h-9 w-9"
+          >
+            {sidebarOpen ? <X size={20} /> : <Menu size={20} />}
+          </Button>
         </div>
+      )}
+
+      {/* Overlay for mobile */}
+      {isMobile && sidebarOpen && (
+        <div 
+          className="fixed inset-0 bg-black/50 z-20"
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
+      
+      {/* Sidebar */}
+      <div 
+        className={`${isMobile ? 'fixed left-0 top-0 bottom-0 z-30' : 'relative'} 
+          bg-white shadow-md flex flex-col border-r border-gray-200 flex-shrink-0 
+          transition-all duration-300 ease-in-out
+          ${isMobile ? (sidebarOpen ? 'translate-x-0 w-[280px]' : '-translate-x-full w-0') : 'w-64'}
+        `}
+      >
+        {!isMobile && (
+          <div className="p-4 border-b border-gray-200 flex items-center space-x-3">
+            <div className="w-8 h-8 rounded-md flex items-center justify-center bg-primary-600 text-white">
+              <FileText size={18} />
+            </div>
+            <span className="text-xl font-semibold text-neutral-800">CotizaApp</span>
+          </div>
+        )}
+        
+        {/* Mobile sidebar header with close button */}
+        {isMobile && (
+          <div className="p-4 border-b border-gray-200 flex items-center justify-between">
+            <div className="flex items-center space-x-3">
+              <div className="w-8 h-8 rounded-md flex items-center justify-center bg-primary-600 text-white">
+                <FileText size={18} />
+              </div>
+              <span className="text-xl font-semibold text-neutral-800">CotizaApp</span>
+            </div>
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => setSidebarOpen(false)}
+              className="h-8 w-8"
+            >
+              <X size={18} />
+            </Button>
+          </div>
+        )}
         
         <div className="p-3 border-b border-gray-200">
           <div className="flex items-center space-x-3">
@@ -78,11 +157,11 @@ export default function SidebarLayout({ children }: SidebarLayoutProps) {
                 {user?.displayName?.substring(0, 2) || user?.email?.substring(0, 2) || "U"}
               </AvatarFallback>
             </Avatar>
-            <div className="flex-1">
-              <div className="text-sm font-medium">{user?.displayName || user?.email}</div>
+            <div className="flex-1 min-w-0">
+              <div className="text-sm font-medium truncate">{user?.displayName || user?.email}</div>
               <div className="text-xs text-neutral-500">Cuenta Empresarial</div>
             </div>
-            <Button variant="ghost" size="icon" className="h-6 w-6">
+            <Button variant="ghost" size="icon" className="h-6 w-6 flex-shrink-0">
               <ChevronDown className="h-4 w-4 text-neutral-400" />
             </Button>
           </div>
@@ -178,7 +257,13 @@ export default function SidebarLayout({ children }: SidebarLayoutProps) {
       
       {/* Main Content */}
       <div className="flex-1 flex flex-col overflow-hidden">
-        {children}
+        {/* Mobile padding for the fixed header */}
+        {isMobile && <div className="h-14"></div>}
+        
+        {/* Content area */}
+        <div className="flex-1 overflow-auto p-4 md:p-6">
+          {children}
+        </div>
       </div>
     </div>
   );
