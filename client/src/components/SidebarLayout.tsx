@@ -117,7 +117,7 @@ export default function SidebarLayout({ children }: SidebarLayoutProps) {
         className={`${isMobile ? 'fixed left-0 top-0 bottom-0 z-30' : 'relative'} 
           bg-white shadow-md flex flex-col border-r border-gray-200 flex-shrink-0 
           transition-all duration-300 ease-in-out
-          ${isMobile ? (sidebarOpen ? 'translate-x-0 w-[280px]' : '-translate-x-full w-0') : 'w-64'}
+          ${isMobile ? (sidebarOpen ? 'translate-x-0 w-[280px]' : '-translate-x-full w-0 opacity-0 invisible') : 'w-64'}
         `}
       >
         {!isMobile && (

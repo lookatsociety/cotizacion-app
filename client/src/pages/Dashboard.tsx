@@ -6,11 +6,25 @@ import { Button } from "@/components/ui/button";
 import { FileText, Plus, Users, ChevronRight } from "lucide-react";
 
 export default function Dashboard() {
-  const { data: quotations = [] } = useQuery({
+  type Quotation = {
+    id: number;
+    customerName: string;
+    date: string;
+    quotationNumber: string;
+    status?: string;
+  };
+
+  type Customer = {
+    id: number;
+    name: string;
+    email: string;
+  };
+  
+  const { data: quotations = [] } = useQuery<any[]>({
     queryKey: ["/api/quotations"],
   });
 
-  const { data: customers = [] } = useQuery({
+  const { data: customers = [] } = useQuery<any[]>({
     queryKey: ["/api/customers"],
   });
 
@@ -20,9 +34,9 @@ export default function Dashboard() {
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 sm:gap-0 mb-4 sm:mb-6">
           <h1 className="text-xl sm:text-2xl font-bold text-gray-900">Dashboard</h1>
           <Link href="/quotations/new">
-            <Button size={window.innerWidth < 640 ? "sm" : "default"} className="w-full sm:w-auto">
+            <Button size="sm" className="w-full sm:w-auto">
               <Plus className="mr-2 h-4 w-4" />
-              <span className="sm:inline">Nueva Cotización</span>
+              <span>Nueva Cotización</span>
             </Button>
           </Link>
         </div>
@@ -35,7 +49,7 @@ export default function Dashboard() {
               </CardTitle>
             </CardHeader>
             <CardContent className="px-4 sm:px-6">
-              <div className="text-2xl sm:text-3xl font-bold">{quotations.length}</div>
+              <div className="text-2xl sm:text-3xl font-bold">{quotations?.length || 0}</div>
               <div className="text-[10px] sm:text-xs text-muted-foreground mt-1">
                 Cotizaciones creadas
               </div>
