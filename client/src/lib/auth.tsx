@@ -1,21 +1,25 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { 
+  signInWithPopup, 
+  signOut, 
+  onAuthStateChanged, 
+  User as FirebaseUser 
+} from "firebase/auth";
+import { auth, googleProvider } from "./firebase";
 import { queryClient, apiRequest } from "./queryClient";
+import { useToast } from "@/hooks/use-toast";
 
 interface User {
-  id: number;
-  username: string;
-  email?: string;
-  displayName?: string;
-  googleId?: string;
-  photoUrl?: string;
+  uid: string;
+  email: string | null;
+  displayName: string | null;
+  photoURL: string | null;
 }
 
 interface AuthContextType {
   user: User | null;
   isAuthenticated: boolean;
   isLoading: boolean;
-  login: (username: string, password: string) => Promise<void>;
   googleLogin: () => Promise<void>;
   logout: () => Promise<void>;
 }
@@ -24,72 +28,67 @@ const AuthContext = createContext<AuthContextType>({
   user: null,
   isAuthenticated: false,
   isLoading: true,
-  login: async () => {},
   googleLogin: async () => {},
   logout: async () => {},
 });
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
+  const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-
-  // Fetch current user
-  const { data: user, isSuccess, isError } = useQuery({
-    queryKey: ["/api/auth/me"],
-    queryFn: async ({ queryKey }) => {
-      try {
-        const res = await fetch(queryKey[0] as string, {
-          credentials: "include",
-        });
-        
-        if (res.status === 401) {
-          return null;
-        }
-        
-        if (!res.ok) {
-          throw new Error("Failed to fetch user");
-        }
-        
-        return res.json();
-      } catch (error) {
-        return null;
-      }
-    },
-    retry: false,
-  });
+  const { toast } = useToast();
 
   useEffect(() => {
-    if (isSuccess || isError) {
+    const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
+      if (firebaseUser) {
+        const user: User = {
+          uid: firebaseUser.uid,
+          email: firebaseUser.email,
+          displayName: firebaseUser.displayName,
+          photoURL: firebaseUser.photoURL,
+        };
+        setUser(user);
+      } else {
+        setUser(null);
+      }
       setIsLoading(false);
-    }
-  }, [isSuccess, isError]);
-
-  const login = async (username: string, password: string) => {
-    const response = await apiRequest("POST", "/api/auth/login", {
-      username,
-      password,
     });
 
-    const userData = await response.json();
-    queryClient.setQueryData(["/api/auth/me"], userData);
-    
-    return userData;
-  };
+    return () => unsubscribe();
+  }, []);
 
   const googleLogin = async () => {
-    window.location.href = "/api/auth/google";
+    try {
+      setIsLoading(true);
+      await signInWithPopup(auth, googleProvider);
+    } catch (error) {
+      console.error("Error al iniciar sesión con Google:", error);
+      toast({
+        title: "Error de inicio de sesión",
+        description: "No se pudo iniciar sesión con Google",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const logout = async () => {
-    await apiRequest("POST", "/api/auth/logout", {});
-    queryClient.setQueryData(["/api/auth/me"], null);
-    queryClient.invalidateQueries({ queryKey: ["/api/auth/me"] });
+    try {
+      await signOut(auth);
+    } catch (error) {
+      console.error("Error al cerrar sesión:", error);
+      toast({
+        title: "Error al cerrar sesión",
+        description: "No se pudo cerrar la sesión",
+        variant: "destructive",
+      });
+    }
   };
 
   const value = {
-    user: user || null,
+    user,
     isAuthenticated: !!user,
     isLoading,
-    login,
     googleLogin,
     logout,
   };

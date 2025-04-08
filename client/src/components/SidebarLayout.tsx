@@ -73,13 +73,13 @@ export default function SidebarLayout({ children }: SidebarLayoutProps) {
         <div className="p-3 border-b border-gray-200">
           <div className="flex items-center space-x-3">
             <Avatar>
-              <AvatarImage src={user?.photoUrl || ""} />
+              <AvatarImage src={user?.photoURL || ""} />
               <AvatarFallback>
-                {user?.displayName?.substring(0, 2) || user?.username?.substring(0, 2) || "U"}
+                {user?.displayName?.substring(0, 2) || user?.email?.substring(0, 2) || "U"}
               </AvatarFallback>
             </Avatar>
             <div className="flex-1">
-              <div className="text-sm font-medium">{user?.displayName || user?.username}</div>
+              <div className="text-sm font-medium">{user?.displayName || user?.email}</div>
               <div className="text-xs text-neutral-500">Cuenta Empresarial</div>
             </div>
             <Button variant="ghost" size="icon" className="h-6 w-6">
