@@ -20,9 +20,10 @@ import { useToast } from "@/hooks/use-toast";
 interface SidebarProps {
   mobileMenuOpen: boolean;
   setMobileMenuOpen: (open: boolean) => void;
+  sidebarOpen?: boolean;
 }
 
-export default function Sidebar({ mobileMenuOpen, setMobileMenuOpen }: SidebarProps) {
+export default function Sidebar({ mobileMenuOpen, setMobileMenuOpen, sidebarOpen = true }: SidebarProps) {
   const [location] = useLocation();
   const { user, logout } = useAuth();
   const { toast } = useToast();
@@ -49,8 +50,8 @@ export default function Sidebar({ mobileMenuOpen, setMobileMenuOpen }: SidebarPr
 
   return (
     <>
-      {/* SIDEBAR PARA DESKTOP - Always visible on md screens and up */}
-      <div className="hidden md:flex h-screen w-64 flex-col fixed inset-y-0 bg-white border-r border-gray-200 z-30">
+      {/* SIDEBAR PARA DESKTOP - Visible según estado sidebarOpen */}
+      <div className={`${sidebarOpen ? 'md:flex' : 'md:hidden'} hidden h-screen w-64 flex-col fixed inset-y-0 bg-white border-r border-gray-200 z-30 transition-all duration-300`}>
         <div className="p-4 border-b border-gray-200 flex items-center space-x-3">
           <div className="w-8 h-8 rounded-md flex items-center justify-center bg-primary-600 text-white">
             <FileText size={18} />
