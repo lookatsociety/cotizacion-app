@@ -36,12 +36,12 @@ function Router() {
   const isLoginPage = location === "/login";
 
   return (
-    <>
-      <Switch>
-        <Route path="/login" component={Login} />
-        
-        {/* Todas las rutas protegidas ahora comparten un único SidebarLayout */}
-        <Route path="/">
+    <Switch>
+      <Route path="/login" component={Login} />
+      
+      {/* Para todas las demás rutas, usamos ProtectedLayout */}
+      <Route path="/">
+        {(params) => (
           <ProtectedLayout>
             <Switch>
               <Route path="/" component={Dashboard} />
@@ -50,9 +50,9 @@ function Router() {
               <Route component={NotFound} />
             </Switch>
           </ProtectedLayout>
-        </Route>
-      </Switch>
-    </>
+        )}
+      </Route>
+    </Switch>
   );
 }
 
