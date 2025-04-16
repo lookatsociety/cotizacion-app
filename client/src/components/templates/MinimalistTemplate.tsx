@@ -42,7 +42,9 @@ export default function MinimalistTemplate({
       <div className="border-b pb-6 mb-6">
         <div className="flex justify-between items-center">
           <div className="flex items-center">
-            <img src={spekLogo} alt="SPEK Industrial" className="h-40 object-contain" />
+            <div className="border-2 border-black rounded-lg p-2">
+              <img src={spekLogo} alt="SPEK Industrial" className="h-40 object-contain" />
+            </div>
           </div>
           <div className="text-sm text-right">
             <div className="font-medium">{companyInfo.name}</div>
