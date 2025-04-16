@@ -124,7 +124,7 @@ export default function ProfessionalTemplate({
                     </div>
                   )}
                 </td>
-                <td className="py-4 px-4 text-center">{item.quantity}</td>
+                <td className="py-4 px-4 text-center"><span className="font-mono mr-1 text-neutral-500">#{index + 1}</span> {item.quantity}</td>
                 <td className="py-4 px-4 text-right">{formatCurrency(Number(item.price))}</td>
                 <td className="py-4 px-4 text-right font-medium">{formatCurrency(Number(item.total))}</td>
               </tr>

@@ -129,7 +129,7 @@ export default function MinimalistTemplate({
                 </div>
               )}
             </div>
-            <div className="col-span-2 text-center self-center">{item.quantity}</div>
+            <div className="col-span-2 text-center self-center"><span className="font-mono text-gray-500 mr-1">#{index + 1}</span> {item.quantity}</div>
             <div className="col-span-2 text-right self-center">{formatCurrency(Number(item.price))}</div>
             <div className="col-span-2 text-right self-center font-medium">{formatCurrency(Number(item.total))}</div>
           </div>

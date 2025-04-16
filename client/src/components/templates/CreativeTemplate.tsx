@@ -116,7 +116,7 @@ export default function CreativeTemplate({
               </div>
               
               <div className="col-span-2 text-right self-center">
-                <div className="text-sm text-gray-500">Precio × {item.quantity}</div>
+                <div className="text-sm text-gray-500"><span className="font-mono mr-1">#{index + 1}</span> Precio × {item.quantity}</div>
                 <div className="font-medium">{formatCurrency(Number(item.price))}</div>
               </div>
               
