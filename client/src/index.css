@@ -272,7 +272,7 @@
 body.printing {
   overflow: auto !important;
   height: auto !important;
-  background-color: #f0f0f0 !important;
+  background-color: white !important;
 }
 
 body.printing * {
@@ -285,34 +285,33 @@ body.printing .quotation-template * {
 
 body.printing .quotation-template {
   position: absolute !important;
-  top: 50% !important;
-  left: 50% !important;
-  transform: translate(-50%, -50%) !important;
-  width: 210mm !important;
-  min-height: 297mm !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100% !important;
+  height: 100vh !important;
   visibility: visible !important;
   display: block !important;
   background-color: white !important;
   margin: 0 auto !important;
   padding: 0 !important;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1) !important;
+  box-shadow: none !important;
   border-radius: 0 !important;
   z-index: 9999 !important;
-  border: 1px solid #ddd !important;
+  border: none !important;
 }
 
 /* Estilos de impresión */
 @media print {
   @page {
-    size: A4;
-    margin: 0.5cm;
+    size: auto;
+    margin: 0;
   }
   
   html, body {
     width: 100%;
     height: 100%;
-    margin: 0;
-    padding: 0;
+    margin: 0 !important;
+    padding: 0 !important;
     background-color: white !important;
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
@@ -328,21 +327,19 @@ body.printing .quotation-template {
   }
   
   .quotation-template {
-    position: absolute !important;
+    position: fixed !important;
     top: 0 !important;
     left: 0 !important;
-    width: 210mm !important;
-    min-height: 297mm !important;
-    max-height: none !important;
+    width: 100% !important;
+    height: 100% !important;
     box-shadow: none !important;
     background-color: white !important;
-    margin: 0 auto !important;
-    padding: 1cm !important;
+    margin: 0 !important;
+    padding: 0 !important;
     overflow: visible !important;
     border: none !important;
     transform: none !important;
-    float: none !important;
-    box-sizing: border-box !important;
+    border-radius: 0 !important;
   }
   
   /* Asegurar que la cotización ocupe toda la página */

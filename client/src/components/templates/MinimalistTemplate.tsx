@@ -37,7 +37,7 @@ export default function MinimalistTemplate({
   };
 
   return (
-    <div className="p-8 bg-white rounded-sm shadow-md border border-gray-300 quotation-template" style={{ aspectRatio: '210/297', width: '100%', maxWidth: '210mm', margin: '0 auto' }}>
+    <div className="p-8 bg-white rounded-lg shadow-md border-2 border-black quotation-template" style={{ width: '100%', margin: '0 auto' }}>
       {/* Header */}
       <div className="border-b pb-6 mb-6">
         <div className="flex justify-between items-center">

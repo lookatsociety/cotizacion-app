@@ -37,7 +37,7 @@ export default function CreativeTemplate({
   };
 
   return (
-    <div className="bg-white rounded-sm shadow-md overflow-hidden border border-gray-300 quotation-template" style={{ aspectRatio: '210/297', width: '100%', maxWidth: '210mm', margin: '0 auto' }}>
+    <div className="bg-white rounded-lg shadow-md overflow-hidden border-2 border-black quotation-template" style={{ width: '100%', margin: '0 auto' }}>
       {/* Header */}
       <div className="bg-gradient-to-r from-secondary-600 to-secondary-500 text-white p-8">
         <div className="flex justify-between items-start">

@@ -50,6 +50,7 @@ export default function QuotationPreview({ quotation }: QuotationPreviewProps) {
   const handlePrintPreview = () => {
     // Preparar la página para impresión - ocultar todo excepto la plantilla
     document.body.classList.add('printing');
+    document.documentElement.style.overflow = 'hidden'; // Evitar scroll en HTML
     
     // Imprimir con un pequeño retraso para permitir que los estilos CSS se apliquen
     setTimeout(() => {
@@ -58,6 +59,7 @@ export default function QuotationPreview({ quotation }: QuotationPreviewProps) {
       // Quitar la clase después de la impresión para restaurar la vista normal
       setTimeout(() => {
         document.body.classList.remove('printing');
+        document.documentElement.style.overflow = ''; // Restaurar scroll
       }, 500);
     }, 300);
   };
@@ -69,9 +71,9 @@ export default function QuotationPreview({ quotation }: QuotationPreviewProps) {
   };
 
   return (
-    <div className="mx-auto max-w-3xl">
-      <div className="bg-gray-100 p-8 rounded-lg">
-        <div className="relative shadow-2xl" style={{ width: '100%', maxWidth: '210mm', margin: '0 auto', pageBreakInside: 'avoid' }}>
+    <div className="mx-auto max-w-4xl">
+      <div className="bg-gray-100 p-4 md:p-8 rounded-lg">
+        <div className="relative shadow-xl">
           {renderTemplate()}
         </div>
       </div>
