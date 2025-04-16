@@ -1,5 +1,5 @@
 import { useCallback } from "react";
-import { QuotationFormData } from "@shared/schema";
+import { QuotationFormData, QuotationWithItems } from "@shared/schema";
 import ProfessionalTemplate from "./templates/ProfessionalTemplate";
 import MinimalistTemplate from "./templates/MinimalistTemplate";
 import CreativeTemplate from "./templates/CreativeTemplate";
@@ -29,8 +29,12 @@ export default function QuotationPreview({ quotation }: QuotationPreviewProps) {
       ...quotation,
       items: quotation.items || [],
       date: quotation.date ? new Date(quotation.date) : new Date(),
-      validUntil: quotation.validUntil ? new Date(quotation.validUntil) : undefined,
-    };
+      validUntil: quotation.validUntil ? new Date(quotation.validUntil) : null,
+      id: 0,  // Campos requeridos por QuotationWithItems pero no usados en visualización
+      userId: 0,
+      customerId: null,
+      status: 'draft',
+    } as QuotationWithItems;
 
     switch (quotation.template) {
       case "minimalist":

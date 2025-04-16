@@ -55,73 +55,87 @@ export function generatePdf(quotation: QuotationFormData | QuotationWithItems) {
   // Set font
   doc.setFont('helvetica', 'normal');
   
+  // Add border to the page (black border with rounded corners)
+  doc.setDrawColor(0);
+  doc.setLineWidth(0.5);
+  doc.roundedRect(10, 10, doc.internal.pageSize.width - 20, doc.internal.pageSize.height - 20, 3, 3);
+  
   // Add header
-  doc.setFontSize(24);
-  doc.setTextColor(66, 63, 232); // Header color to match primary
-  doc.text('COTIZACIÓN', 20, 20);
+  doc.setFontSize(22);
+  doc.setTextColor(0, 0, 0); // Black header for better printing
+  doc.text('COTIZACIÓN', 20, 25);
   
   doc.setFontSize(10);
-  doc.setTextColor(100, 100, 100);
-  doc.text(`#${quotation.quotationNumber}`, 20, 26);
+  doc.setTextColor(80, 80, 80);
+  doc.text(`#${quotation.quotationNumber}`, 20, 32);
   
   // Add company information
   doc.setFontSize(10);
   doc.setTextColor(60, 60, 60);
-  doc.text('De:', 20, 40);
+  doc.text('De:', 20, 45);
   doc.setFont('helvetica', 'bold');
-  doc.text(defaultCompanyInfo.name, 20, 45);
+  doc.text("SPEK", 20, 50);
   doc.setFont('helvetica', 'normal');
-  doc.text(defaultCompanyInfo.email, 20, 50);
-  doc.text(defaultCompanyInfo.phone, 20, 55);
-  doc.text(defaultCompanyInfo.address, 20, 60);
+  doc.text("Ing. Victor Galván Santoyo", 20, 55);
+  doc.text("Servicios y Productos Especializados Krapsol (S.P.E.K) S.A. de C.V.", 20, 60);
+  doc.text("81 1991 1723", 20, 65);
+  doc.text("vgalvan@spekmx.com     www.spekmx.com", 20, 70);
   
   // Add customer information
-  doc.text('Para:', 120, 40);
+  doc.text('Para:', 120, 45);
   doc.setFont('helvetica', 'bold');
-  doc.text(quotation.customerName, 120, 45);
+  doc.text(quotation.customerName || 'Cliente', 120, 50);
   
   if (quotation.customerEmail) {
     doc.setFont('helvetica', 'normal');
-    doc.text(quotation.customerEmail, 120, 50);
+    doc.text(quotation.customerEmail, 120, 55);
   }
   
   if (quotation.customerPhone) {
     doc.setFont('helvetica', 'normal');
-    doc.text(quotation.customerPhone, 120, 55);
+    doc.text(quotation.customerPhone, 120, 60);
   }
   
   if (quotation.customerAddress) {
     doc.setFont('helvetica', 'normal');
     const addressLines = doc.splitTextToSize(quotation.customerAddress, 70);
-    doc.text(addressLines, 120, quotation.customerPhone ? 60 : 55);
+    doc.text(addressLines, 120, quotation.customerPhone ? 65 : 60);
+  }
+  
+  // Add project name if available
+  if (quotation.projectName) {
+    doc.setFont('helvetica', 'bold');
+    doc.text('Proyecto:', 20, 80);
+    doc.setFont('helvetica', 'normal');
+    doc.text(quotation.projectName, 55, 80);
   }
   
   // Add quotation details
-  doc.text('Fecha de Emisión:', 20, 75);
-  doc.text(date, 60, 75);
+  doc.text('Fecha de Emisión:', 20, 85);
+  doc.text(date, 65, 85);
   
-  doc.text('Válido Hasta:', 120, 75);
-  doc.text(validUntil, 160, 75);
+  doc.text('Válido Hasta:', 120, 85);
+  doc.text(validUntil, 165, 85);
   
   // Add table header
   const tableHeaders = [['Descripción', 'Cant.', 'Precio', 'Total']];
   
   // Add table rows
-  const tableRows = items.map(item => [
+  const tableRows = items.map((item, index) => [
     {
       content: item.name + (item.description ? `\n${item.description}` : ''),
       styles: { cellWidth: 'auto' }
     },
     { 
-      content: item.quantity.toString(),
+      content: `#${index + 1} ${Number(item.quantity).toString()}`,
       styles: { halign: 'center' }
     },
     { 
-      content: formatCurrency(item.price),
+      content: formatCurrency(Number(item.price)),
       styles: { halign: 'right' }
     },
     { 
-      content: formatCurrency(item.total),
+      content: formatCurrency(Number(item.total)),
       styles: { halign: 'right' }
     }
   ]);
@@ -130,16 +144,18 @@ export function generatePdf(quotation: QuotationFormData | QuotationWithItems) {
   doc.autoTable({
     head: tableHeaders,
     body: tableRows,
-    startY: 85,
+    startY: 95, // Ajustar posición más abajo
     theme: 'grid',
     headStyles: {
       fillColor: [240, 240, 240],
-      textColor: [80, 80, 80],
+      textColor: [0, 0, 0],  // Negro para mejor contraste
       fontStyle: 'bold',
     },
     styles: {
       fontSize: 10,
       cellPadding: 5,
+      lineColor: [0, 0, 0], // Líneas negras para mejor impresión
+      lineWidth: 0.1,
     },
     columnStyles: {
       0: { cellWidth: 'auto' },
@@ -155,24 +171,38 @@ export function generatePdf(quotation: QuotationFormData | QuotationWithItems) {
   // Add summary
   doc.setFontSize(10);
   doc.text('Subtotal:', 140, finalY);
-  doc.text(formatCurrency(quotation.subtotal), 170, finalY, { align: 'right' });
+  doc.text(formatCurrency(Number(quotation.subtotal)), 170, finalY, { align: 'right' });
   
-  doc.text(`IVA (${quotation.taxRate}%):`, 140, finalY + 6);
-  doc.text(formatCurrency(quotation.taxAmount), 170, finalY + 6, { align: 'right' });
+  doc.text(`IVA (${Number(quotation.taxRate)}%):`, 140, finalY + 6);
+  doc.text(formatCurrency(Number(quotation.taxAmount)), 170, finalY + 6, { align: 'right' });
   
   doc.setFontSize(12);
   doc.setFont('helvetica', 'bold');
   doc.text('Total:', 140, finalY + 15);
-  doc.text(formatCurrency(quotation.total), 170, finalY + 15, { align: 'right' });
+  doc.text(formatCurrency(Number(quotation.total)), 170, finalY + 15, { align: 'right' });
+  
+  // Calcular la posición para las secciones de notas y condiciones
+  let currentY = finalY + 30;
   
   // Add notes if available
   if (quotation.notes) {
     doc.setFontSize(10);
     doc.setFont('helvetica', 'bold');
-    doc.text('Notas:', 20, finalY + 30);
+    doc.text('Notas:', 20, currentY);
     doc.setFont('helvetica', 'normal');
     const noteLines = doc.splitTextToSize(quotation.notes, 170);
-    doc.text(noteLines, 20, finalY + 36);
+    doc.text(noteLines, 20, currentY + 6);
+    currentY += 6 + noteLines.length * 5; // Ajustar la posición basada en el número de líneas
+  }
+  
+  // Add delivery terms if available
+  if (quotation.deliveryTerms) {
+    doc.setFontSize(10);
+    doc.setFont('helvetica', 'bold');
+    doc.text('Condiciones de entrega y pago:', 20, currentY + 6);
+    doc.setFont('helvetica', 'normal');
+    const termLines = doc.splitTextToSize(quotation.deliveryTerms, 170);
+    doc.text(termLines, 20, currentY + 12);
   }
   
   // Add footer
