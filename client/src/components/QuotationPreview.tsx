@@ -48,20 +48,9 @@ export default function QuotationPreview({ quotation }: QuotationPreviewProps) {
   }, [quotation]);
 
   const handlePrintPreview = () => {
-    // Preparar la página para impresión - ocultar todo excepto la plantilla
-    document.body.classList.add('printing');
-    document.documentElement.style.overflow = 'hidden'; // Evitar scroll en HTML
-    
-    // Imprimir con un pequeño retraso para permitir que los estilos CSS se apliquen
-    setTimeout(() => {
-      window.print();
-      
-      // Quitar la clase después de la impresión para restaurar la vista normal
-      setTimeout(() => {
-        document.body.classList.remove('printing');
-        document.documentElement.style.overflow = ''; // Restaurar scroll
-      }, 500);
-    }, 300);
+    // Un enfoque simple - solo usar la función de impresión del navegador
+    // Los estilos CSS @media print se encargarán de mostrar/ocultar elementos
+    window.print();
   };
 
   const handleExportPdf = () => {
@@ -71,15 +60,15 @@ export default function QuotationPreview({ quotation }: QuotationPreviewProps) {
   };
 
   return (
-    <div className="mx-auto max-w-4xl">
-      <div className="bg-gray-100 p-4 md:p-8 rounded-lg">
+    <div className="mx-auto max-w-4xl print-container">
+      <div className="bg-gray-100 p-4 md:p-8 rounded-lg print-bg">
         <div className="relative shadow-xl">
           {renderTemplate()}
         </div>
       </div>
       
       {/* Export Options */}
-      <div className="bg-white px-8 py-4 rounded-lg border border-gray-200 mt-4 flex justify-between items-center">
+      <div className="bg-white px-8 py-4 rounded-lg border border-gray-200 mt-4 flex justify-between items-center print-hide">
         <div className="flex items-center space-x-2">
           <span className="text-sm text-neutral-600">Plantilla:</span>
           <span className="text-sm font-medium capitalize">

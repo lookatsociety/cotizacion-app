@@ -275,71 +275,81 @@ body.printing {
   background-color: white !important;
 }
 
-body.printing * {
-  visibility: hidden !important;
-}
-
-body.printing .quotation-template * {
-  visibility: visible !important;
-}
-
-body.printing .quotation-template {
-  position: absolute !important;
-  top: 0 !important;
-  left: 0 !important;
-  width: 100% !important;
-  height: 100vh !important;
-  visibility: visible !important;
-  display: block !important;
-  background-color: white !important;
-  margin: 0 auto !important;
-  padding: 0 !important;
-  box-shadow: none !important;
-  border-radius: 0 !important;
-  z-index: 9999 !important;
-  border: none !important;
+body.printing .hide-on-print {
+  display: none !important;
 }
 
 /* Estilos de impresión */
 @media print {
   @page {
-    size: auto;
-    margin: 0;
+    size: Letter portrait;
+    margin: 0.5cm;
   }
   
   html, body {
-    width: 100%;
-    height: 100%;
-    margin: 0 !important;
-    padding: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
     background-color: white !important;
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
-  }
-  
-  body * {
-    visibility: hidden !important;
-  }
-  
-  /* Solo muestra el contenedor de la plantilla de cotización */
-  .quotation-template, .quotation-template * {
-    visibility: visible !important;
-  }
-  
-  .quotation-template {
-    position: fixed !important;
-    top: 0 !important;
-    left: 0 !important;
-    width: 100% !important;
-    height: 100% !important;
-    box-shadow: none !important;
-    background-color: white !important;
     margin: 0 !important;
     padding: 0 !important;
+  }
+  
+  /* Ocultar todo lo que no se debe imprimir */
+  * {
+    display: none !important;
+  }
+  
+  /* Mostrar solo la cotización y sus elementos */
+  .quotation-template {
+    display: block !important;
+    width: 100% !important;
+    max-width: none !important;
+    margin: 0 auto !important;
+    padding: 5mm !important;
+    box-shadow: none !important;
+    border: 2px solid black !important;
+    border-radius: 8px !important;
+    box-sizing: border-box !important;
+    position: absolute !important;
+    left: 0 !important;
+    top: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    page-break-inside: avoid !important;
     overflow: visible !important;
-    border: none !important;
-    transform: none !important;
-    border-radius: 0 !important;
+  }
+  
+  /* Todos los elementos dentro de la cotización deben mostrarse */
+  .quotation-template * {
+    display: block !important;
+    visibility: visible !important;
+    overflow: visible !important;
+  }
+  
+  /* Ajustes específicos para elementos flexbox, grid y tablas */
+  .quotation-template .flex, 
+  .quotation-template [class*="flex-"], 
+  .quotation-template .grid, 
+  .quotation-template [class*="grid-"] {
+    display: flex !important;
+  }
+  
+  .quotation-template table {
+    display: table !important;
+    width: 100% !important;
+    border-collapse: collapse !important;
+  }
+  
+  .quotation-template tr {
+    display: table-row !important;
+  }
+  
+  .quotation-template th, 
+  .quotation-template td {
+    display: table-cell !important;
+    border: 1px solid #dee2e6 !important;
   }
   
   /* Asegurar que la cotización ocupe toda la página */
