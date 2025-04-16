@@ -153,9 +153,17 @@ export default function ProfessionalTemplate({
       
       {/* Notes */}
       {quotation.notes && (
-        <div className="bg-gray-50 p-4 rounded-md text-sm text-neutral-600">
+        <div className="bg-gray-50 p-4 rounded-md text-sm text-neutral-600 mb-4">
           <h3 className="font-medium text-neutral-800 mb-2">Notas</h3>
           <p>{quotation.notes}</p>
+        </div>
+      )}
+      
+      {/* Delivery & Payment Terms */}
+      {quotation.deliveryTerms && (
+        <div className="bg-gray-50 p-4 rounded-md text-sm text-neutral-600">
+          <h3 className="font-medium text-neutral-800 mb-2">Condiciones de entrega y pago</h3>
+          <p>{quotation.deliveryTerms}</p>
         </div>
       )}
       

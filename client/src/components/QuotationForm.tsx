@@ -42,6 +42,7 @@ export default function QuotationForm({ onFormDataChange }: QuotationFormProps) 
       taxAmount: 0,
       total: 0,
       notes: "Esta cotización es válida por 30 días a partir de la fecha de emisión. Los precios no incluyen costos adicionales que puedan surgir durante el desarrollo del proyecto.",
+      deliveryTerms: "Entrega en sitio acordado. Pago 50% anticipo, 50% contra entrega. Tiempo de entrega estimado: 15 días hábiles.",
       template: "professional",
       items: [
         {

@@ -133,14 +133,26 @@ export default function TaxAndNotes({ form, calculateTotals }: TaxAndNotesProps)
             </div>
           </div>
           
-          <div>
-            <h2 className="text-lg font-medium mb-3">Notas</h2>
-            <Textarea
-              rows={8}
-              placeholder="Ingrese cualquier nota adicional, términos o condiciones..."
-              className="w-full resize-none"
-              {...form.register("notes")}
-            />
+          <div className="space-y-4">
+            <div>
+              <h2 className="text-lg font-medium mb-3">Notas</h2>
+              <Textarea
+                rows={4}
+                placeholder="Ingrese cualquier nota adicional..."
+                className="w-full resize-none"
+                {...form.register("notes")}
+              />
+            </div>
+            
+            <div>
+              <h2 className="text-lg font-medium mb-3">Condiciones de entrega y pago</h2>
+              <Textarea
+                rows={4}
+                placeholder="Especifique condiciones de entrega, plazos y método de pago..."
+                className="w-full resize-none"
+                {...form.register("deliveryTerms")}
+              />
+            </div>
           </div>
         </div>
       </CardContent>

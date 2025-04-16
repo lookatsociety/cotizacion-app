@@ -38,6 +38,7 @@ export const quotations = pgTable("quotations", {
   taxAmount: decimal("tax_amount", { precision: 10, scale: 2 }).notNull(),
   total: decimal("total", { precision: 10, scale: 2 }).notNull(),
   notes: text("notes"),
+  deliveryTerms: text("delivery_terms"),
   template: text("template").notNull().default("professional"),
   status: text("status").notNull().default("draft"),
 });
@@ -85,6 +86,7 @@ export const quotationFormSchema = z.object({
   taxAmount: z.number().min(0, "El monto de impuestos no puede ser negativo"),
   total: z.number().min(0, "El total no puede ser negativo"),
   notes: z.string().optional().or(z.literal("")),
+  deliveryTerms: z.string().optional().or(z.literal("")),
   template: z.string().min(1, "Plantilla requerida"),
   items: z.array(
     z.object({
