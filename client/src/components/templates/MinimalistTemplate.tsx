@@ -53,8 +53,11 @@ export default function MinimalistTemplate({
             </div>
           </div>
           <div className="text-sm text-right">
-            <div className="font-medium">{companyInfo.name}</div>
-            <div className="text-gray-500">{companyInfo.email}</div>
+            <div className="font-bold text-lg">SPEK</div>
+            <div className="text-sm">Ing. Victor Galván Santoyo</div>
+            <div className="text-sm text-gray-600">Servicios y Productos Especializados Krapsol (S.P.E.K) S.A. de C.V.</div>
+            <div className="text-sm text-gray-600">{companyInfo.phone}</div>
+            <div className="text-sm text-gray-600">{companyInfo.email} &nbsp;&nbsp; {companyInfo.address}</div>
             <div className="mt-2 font-mono text-gray-600 text-xs">FOLIO: #{quotation.quotationNumber}</div>
           </div>
         </div>

@@ -70,10 +70,11 @@ export default function ProfessionalTemplate({
         
         <div>
           <h3 className="text-xs font-medium text-neutral-500 uppercase mb-1">De</h3>
-          <div className="text-neutral-800 font-medium">{companyInfo.name}</div>
-          <div className="text-sm text-neutral-600">{companyInfo.email}</div>
+          <div className="text-neutral-800 font-bold text-lg">SPEK</div>
+          <div className="text-sm text-neutral-800">Ing. Victor Galván Santoyo</div>
+          <div className="text-sm text-neutral-600">Servicios y Productos Especializados Krapsol (S.P.E.K) S.A. de C.V.</div>
           <div className="text-sm text-neutral-600">{companyInfo.phone}</div>
-          <div className="text-sm text-neutral-600 mt-1">{companyInfo.address}</div>
+          <div className="text-sm text-neutral-600">{companyInfo.email} &nbsp;&nbsp;&nbsp;&nbsp; {companyInfo.address}</div>
         </div>
       </div>
       

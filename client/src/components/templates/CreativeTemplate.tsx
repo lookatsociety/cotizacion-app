@@ -55,8 +55,11 @@ export default function CreativeTemplate({
             </div>
           </div>
           <div className="text-right">
-            <div className="font-bold text-lg">{companyInfo.name}</div>
-            <div className="text-white/80 text-sm">{companyInfo.email}</div>
+            <div className="font-bold text-lg">SPEK</div>
+            <div className="text-white/90 text-sm">Ing. Victor Galván Santoyo</div>
+            <div className="text-white/80 text-sm">Servicios y Productos Especializados Krapsol (S.P.E.K) S.A. de C.V.</div>
+            <div className="text-white/80 text-sm">{companyInfo.phone}</div>
+            <div className="text-white/80 text-sm">{companyInfo.email} &nbsp;&nbsp; {companyInfo.address}</div>
             <div className="bg-white/20 rounded-md px-3 py-1 mt-2 text-sm inline-block">
               #{quotation.quotationNumber}
             </div>
