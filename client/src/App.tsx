@@ -7,8 +7,10 @@ import Login from "@/pages/Login";
 import NotFound from "@/pages/not-found";
 import { AuthProvider, useAuth } from "@/lib/auth";
 import { useEffect } from "react";
+import SidebarLayout from "@/components/SidebarLayout";
 
-const ProtectedRoute = ({ component: Component, ...rest }: any) => {
+// Componente que envuelve las rutas protegidas con el SidebarLayout
+const ProtectedLayout = ({ children }: { children: React.ReactNode }) => {
   const { isAuthenticated, isLoading } = useAuth();
   const [, setLocation] = useLocation();
 
@@ -26,18 +28,31 @@ const ProtectedRoute = ({ component: Component, ...rest }: any) => {
     return null;
   }
 
-  return <Component {...rest} />;
+  return <SidebarLayout>{children}</SidebarLayout>;
 };
 
 function Router() {
+  const location = useLocation()[0];
+  const isLoginPage = location === "/login";
+
   return (
-    <Switch>
-      <Route path="/login" component={Login} />
-      <Route path="/" component={() => <ProtectedRoute component={Dashboard} />} />
-      <Route path="/quotations" component={() => <ProtectedRoute component={Quotations} />} />
-      <Route path="/quotations/new" component={() => <ProtectedRoute component={NewQuotation} />} />
-      <Route component={NotFound} />
-    </Switch>
+    <>
+      <Switch>
+        <Route path="/login" component={Login} />
+        
+        {/* Todas las rutas protegidas ahora comparten un único SidebarLayout */}
+        <Route path="/">
+          <ProtectedLayout>
+            <Switch>
+              <Route path="/" component={Dashboard} />
+              <Route path="/quotations" component={Quotations} />
+              <Route path="/quotations/new" component={NewQuotation} />
+              <Route component={NotFound} />
+            </Switch>
+          </ProtectedLayout>
+        </Route>
+      </Switch>
+    </>
   );
 }
 

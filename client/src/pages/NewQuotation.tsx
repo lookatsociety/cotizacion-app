@@ -1,5 +1,4 @@
 import { useState } from "react";
-import SidebarLayout from "@/components/SidebarLayout";
 import QuotationForm from "@/components/QuotationForm";
 import QuotationPreview from "@/components/QuotationPreview";
 import { useToast } from "@/hooks/use-toast";
@@ -51,7 +50,7 @@ export default function NewQuotation() {
   };
 
   return (
-    <SidebarLayout>
+    <div className="flex flex-col h-full">
       <header className="bg-white border-b border-gray-200 shadow-sm">
         <div className="flex justify-between items-center px-6 py-3">
           <div className="flex items-center space-x-4">
@@ -95,6 +94,6 @@ export default function NewQuotation() {
           </div>
         )}
       </div>
-    </SidebarLayout>
+    </div>
   );
 }
