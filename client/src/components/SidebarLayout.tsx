@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Link, useLocation } from "wouter";
 import { useAuth } from "@/lib/auth";
 import { 
@@ -17,7 +17,7 @@ import {
   Menu,
   X
 } from "lucide-react";
-import { useIsMobile } from "@/hooks/use-mobile";
+import { useIsMobile, useSidebar } from "@/hooks/use-mobile";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useToast } from "@/hooks/use-toast";
@@ -31,26 +31,9 @@ export default function SidebarLayout({ children }: SidebarLayoutProps) {
   const { user, logout } = useAuth();
   const { toast } = useToast();
   const [isDarkMode, setIsDarkMode] = useState(false);
-  const [sidebarOpen, setSidebarOpen] = useState(false);
-  const isMobile = useIsMobile();
-
-  // Close sidebar when changing routes on mobile
-  useEffect(() => {
-    if (isMobile) {
-      setSidebarOpen(false);
-    }
-  }, [location, isMobile]);
-
-  // Set sidebar to always open on desktop
-  useEffect(() => {
-    if (!isMobile) {
-      setSidebarOpen(true);
-    }
-  }, [isMobile]);
-
-  const toggleSidebar = () => {
-    setSidebarOpen(!sidebarOpen);
-  };
+  
+  // Usar el nuevo hook que maneja toda la lógica de la barra lateral
+  const { isOpen: sidebarOpen, toggle: toggleSidebar, close: closeSidebar, isMobile } = useSidebar();
 
   const handleLogout = async () => {
     try {
@@ -108,7 +91,7 @@ export default function SidebarLayout({ children }: SidebarLayoutProps) {
       {isMobile && sidebarOpen && (
         <div 
           className="fixed inset-0 bg-black/50 z-20"
-          onClick={() => setSidebarOpen(false)}
+          onClick={closeSidebar}
         />
       )}
       
@@ -141,7 +124,7 @@ export default function SidebarLayout({ children }: SidebarLayoutProps) {
             <Button
               variant="ghost"
               size="icon"
-              onClick={() => setSidebarOpen(false)}
+              onClick={closeSidebar}
               className="h-8 w-8"
             >
               <X size={18} />
