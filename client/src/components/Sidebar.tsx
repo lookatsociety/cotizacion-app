@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { Link, useLocation } from "wouter";
 import { useAuth } from "@/lib/auth";
 import { 
@@ -11,18 +10,21 @@ import {
   File, 
   HelpCircle, 
   LogOut, 
-  Menu,
   X
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useToast } from "@/hooks/use-toast";
 
-export default function Sidebar() {
+interface SidebarProps {
+  mobileMenuOpen: boolean;
+  setMobileMenuOpen: (open: boolean) => void;
+}
+
+export default function Sidebar({ mobileMenuOpen, setMobileMenuOpen }: SidebarProps) {
   const [location] = useLocation();
   const { user, logout } = useAuth();
   const { toast } = useToast();
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const handleLogout = async () => {
     try {
@@ -140,14 +142,7 @@ export default function Sidebar() {
         </div>
       </div>
       
-      {/* MOBILE BUTTON - Always visible on small screens only */}
-      <button
-        onClick={() => setMobileMenuOpen(true)}
-        className="fixed top-4 right-4 z-50 md:hidden w-12 h-12 bg-blue-600 text-white rounded-full flex items-center justify-center shadow-lg"
-        aria-label="Abrir menú"
-      >
-        <Menu size={24} />
-      </button>
+      {/* Mobile menu button removed - now handled by SidebarLayout */}
       
       {/* MOBILE MENU - Only visible when open */}
       {mobileMenuOpen && (
