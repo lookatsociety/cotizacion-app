@@ -11,7 +11,8 @@ import {
   HelpCircle, 
   LogOut, 
   Menu,
-  X
+  X,
+  Moon
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -141,6 +142,13 @@ export default function Sidebar({ mobileMenuOpen, setMobileMenuOpen, sidebarOpen
                 <span className="ml-3">Ayuda</span>
               </a>
             </Link>
+            <div className="theme-toggle-item mt-2">
+              <div className="flex items-center">
+                <Moon className="sidebar-icon" />
+                <span className="ml-3">Modo oscuro</span>
+              </div>
+              <ThemeToggle />
+            </div>
           </nav>
         </div>
         
@@ -285,6 +293,13 @@ export default function Sidebar({ mobileMenuOpen, setMobileMenuOpen, sidebarOpen
                     <span className="ml-3">Ayuda</span>
                   </a>
                 </Link>
+                <div className="theme-toggle-item mt-2" onClick={() => setMobileMenuOpen(false)}>
+                  <div className="flex items-center">
+                    <Moon className="sidebar-icon" />
+                    <span className="ml-3">Modo oscuro</span>
+                  </div>
+                  <ThemeToggle />
+                </div>
               </nav>
             </div>
             
