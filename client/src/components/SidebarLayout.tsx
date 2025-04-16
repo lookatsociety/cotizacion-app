@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useLocation } from "wouter";
 import { useAuth } from "@/lib/auth";
 import { 
@@ -65,27 +65,46 @@ export default function SidebarLayout({ children }: SidebarLayoutProps) {
     return location === path;
   };
 
+  // Forzar la detección de pantallas pequeñas
+  const [isSmallScreen, setIsSmallScreen] = useState(false);
+  
+  // Detectar tamaño de pantalla independientemente del hook useIsMobile
+  useEffect(() => {
+    const checkScreenSize = () => {
+      if (typeof window !== 'undefined') {
+        setIsSmallScreen(window.innerWidth < 768);
+      }
+    };
+    
+    // Comprobar inicialmente
+    checkScreenSize();
+    
+    // Añadir listener para cambios de tamaño
+    window.addEventListener('resize', checkScreenSize);
+    
+    // Limpiar
+    return () => window.removeEventListener('resize', checkScreenSize);
+  }, []);
+
   return (
     <div className="flex h-screen overflow-hidden bg-gray-50">
-      {/* Mobile Header */}
-      {isMobile && (
-        <div className="fixed top-0 left-0 right-0 h-14 bg-white border-b border-gray-200 flex items-center justify-between px-4 z-30">
-          <div className="flex items-center space-x-3">
-            <div className="w-7 h-7 rounded-md flex items-center justify-center bg-primary-600 text-white">
-              <FileText size={16} />
-            </div>
-            <span className="text-lg font-semibold text-neutral-800">CotizaApp</span>
+      {/* Mobile Header - lo mostramos siempre en pantallas pequeñas */}
+      <div className={`${isSmallScreen || isMobile ? 'fixed' : 'hidden'} top-0 left-0 right-0 h-14 bg-white border-b border-gray-200 flex items-center justify-between px-4 z-30`}>
+        <div className="flex items-center space-x-3">
+          <div className="w-7 h-7 rounded-md flex items-center justify-center bg-primary-600 text-white">
+            <FileText size={16} />
           </div>
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={toggleSidebar}
-            className="h-9 w-9"
-          >
-            {sidebarOpen ? <X size={20} /> : <Menu size={20} />}
-          </Button>
+          <span className="text-lg font-semibold text-neutral-800">CotizaApp</span>
         </div>
-      )}
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={toggleSidebar}
+          className="h-9 w-9"
+        >
+          {sidebarOpen ? <X size={20} /> : <Menu size={20} />}
+        </Button>
+      </div>
 
       {/* Overlay for mobile */}
       {isMobile && sidebarOpen && (
@@ -240,8 +259,8 @@ export default function SidebarLayout({ children }: SidebarLayoutProps) {
       
       {/* Main Content */}
       <div className="flex-1 flex flex-col overflow-hidden">
-        {/* Mobile padding for the fixed header */}
-        {isMobile && <div className="h-14"></div>}
+        {/* Mobile padding for the fixed header - siempre en pantallas pequeñas */}
+        {(isSmallScreen || isMobile) && <div className="h-14"></div>}
         
         {/* Content area */}
         <div className="flex-1 overflow-auto p-4 md:p-6">
