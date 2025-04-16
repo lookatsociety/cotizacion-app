@@ -1,5 +1,4 @@
 import { QuotationWithItems } from "@shared/schema";
-import { SpekIndustrialLogo } from "@/components/SpekLogo";
 
 interface ProfessionalTemplateProps {
   quotation: QuotationWithItems;
@@ -14,10 +13,10 @@ interface ProfessionalTemplateProps {
 export default function ProfessionalTemplate({ 
   quotation, 
   companyInfo = {
-    name: "SPEK Industrial",
-    email: "contacto@spekindustrial.com",
+    name: "Mi Empresa SRL",
+    email: "contacto@miempresa.com",
     phone: "+52 (123) 456-7890",
-    address: "Av. Industrial 123, Ciudad de México, CDMX, 06000",
+    address: "Av. Principal 123, Ciudad de México, CDMX, 06000",
   }
 }: ProfessionalTemplateProps) {
   const formatCurrency = (amount: number) => {
@@ -39,21 +38,17 @@ export default function ProfessionalTemplate({
   return (
     <div className="p-8 bg-white rounded-lg shadow-md">
       {/* Header */}
-      <div className="flex flex-col mb-8">
-        <div className="flex justify-between items-start">
-          <div className="bg-black rounded-lg overflow-hidden p-4 -mx-4 -mt-4 mb-4">
-            <SpekIndustrialLogo width={240} height={80} />
-            <div className="text-sm text-white mt-2 font-mono">#{quotation.quotationNumber}</div>
-          </div>
-          
-          <div className="flex items-center justify-center w-16 h-16 bg-black rounded-lg text-white">
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-            </svg>
-          </div>
+      <div className="flex justify-between items-start mb-8">
+        <div>
+          <h1 className="text-2xl font-bold text-primary-600">COTIZACIÓN</h1>
+          <div className="text-sm text-neutral-500 mt-1 font-mono">#{quotation.quotationNumber}</div>
         </div>
         
-        <div className="bg-neutral-100 h-1 w-full my-4"></div>
+        <div className="flex items-center justify-center w-16 h-16 bg-primary-50 rounded-lg">
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-primary-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+          </svg>
+        </div>
       </div>
       
       {/* Info Rows */}
@@ -90,24 +85,24 @@ export default function ProfessionalTemplate({
       </div>
       
       {/* Items Table */}
-      <div className="mb-8 overflow-hidden rounded-md border border-gray-200">
-        <table className="min-w-full divide-y divide-gray-200">
-          <thead className="bg-black text-white">
-            <tr>
-              <th className="text-left py-3 px-6 text-xs font-medium uppercase tracking-wider">Descripción</th>
-              <th className="text-center py-3 px-6 text-xs font-medium uppercase tracking-wider">Cant.</th>
-              <th className="text-right py-3 px-6 text-xs font-medium uppercase tracking-wider">Precio</th>
-              <th className="text-right py-3 px-6 text-xs font-medium uppercase tracking-wider">Total</th>
+      <div className="mb-8">
+        <table className="min-w-full">
+          <thead>
+            <tr className="border-b border-gray-200">
+              <th className="text-left py-3 px-4 text-xs font-medium text-neutral-500 uppercase tracking-wider">Descripción</th>
+              <th className="text-center py-3 px-4 text-xs font-medium text-neutral-500 uppercase tracking-wider">Cant.</th>
+              <th className="text-right py-3 px-4 text-xs font-medium text-neutral-500 uppercase tracking-wider">Precio</th>
+              <th className="text-right py-3 px-4 text-xs font-medium text-neutral-500 uppercase tracking-wider">Total</th>
             </tr>
           </thead>
-          <tbody className="bg-white divide-y divide-gray-200">
+          <tbody>
             {quotation.items.map((item, index) => (
-              <tr key={index} className={index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
-                <td className="py-4 px-6">
+              <tr key={index} className="border-b border-gray-200">
+                <td className="py-4 px-4">
                   {item.image ? (
                     <div className="flex">
                       <div className="mr-3 flex-shrink-0">
-                        <img src={item.image} alt={item.name} className="w-16 h-16 object-cover rounded-md border border-gray-200" />
+                        <img src={item.image} alt={item.name} className="w-16 h-16 object-cover rounded-md" />
                       </div>
                       <div>
                         <div className="font-medium">{item.name}</div>
@@ -121,9 +116,9 @@ export default function ProfessionalTemplate({
                     </div>
                   )}
                 </td>
-                <td className="py-4 px-6 text-center">{item.quantity}</td>
-                <td className="py-4 px-6 text-right">{formatCurrency(Number(item.price))}</td>
-                <td className="py-4 px-6 text-right font-medium">{formatCurrency(Number(item.total))}</td>
+                <td className="py-4 px-4 text-center">{item.quantity}</td>
+                <td className="py-4 px-4 text-right">{formatCurrency(Number(item.price))}</td>
+                <td className="py-4 px-4 text-right font-medium">{formatCurrency(Number(item.total))}</td>
               </tr>
             ))}
           </tbody>
@@ -132,38 +127,34 @@ export default function ProfessionalTemplate({
       
       {/* Summary */}
       <div className="flex justify-end mb-8">
-        <div className="w-72 border border-gray-200 rounded-md overflow-hidden">
-          <div className="bg-gray-50 p-4">
-            <div className="flex justify-between py-2 text-sm">
-              <div className="text-neutral-600">Subtotal:</div>
-              <div className="font-medium">{formatCurrency(Number(quotation.subtotal))}</div>
-            </div>
-            <div className="flex justify-between py-2 text-sm">
-              <div className="text-neutral-600">IVA ({Number(quotation.taxRate)}%):</div>
-              <div className="font-medium">{formatCurrency(Number(quotation.taxAmount))}</div>
-            </div>
+        <div className="w-64">
+          <div className="flex justify-between py-2 text-sm">
+            <div className="text-neutral-600">Subtotal:</div>
+            <div className="font-medium">{formatCurrency(Number(quotation.subtotal))}</div>
           </div>
-          <div className="flex justify-between py-4 px-4 text-base bg-black text-white">
+          <div className="flex justify-between py-2 text-sm border-b border-gray-200">
+            <div className="text-neutral-600">IVA ({Number(quotation.taxRate)}%):</div>
+            <div className="font-medium">{formatCurrency(Number(quotation.taxAmount))}</div>
+          </div>
+          <div className="flex justify-between py-3 text-base">
             <div className="font-semibold">Total:</div>
-            <div className="font-bold">{formatCurrency(Number(quotation.total))}</div>
+            <div className="font-bold text-primary-600">{formatCurrency(Number(quotation.total))}</div>
           </div>
         </div>
       </div>
       
       {/* Notes */}
       {quotation.notes && (
-        <div className="bg-black p-5 rounded-md text-white">
-          <h3 className="font-medium text-white mb-3 uppercase tracking-wider">Notas</h3>
-          <p className="font-light leading-relaxed">{quotation.notes}</p>
+        <div className="bg-gray-50 p-4 rounded-md text-sm text-neutral-600">
+          <h3 className="font-medium text-neutral-800 mb-2">Notas</h3>
+          <p>{quotation.notes}</p>
         </div>
       )}
       
       {/* Footer */}
-      <div className="mt-10 text-center border-t border-gray-200 pt-8">
-        <div className="inline-block bg-black text-white px-6 py-3 rounded-full">
-          <p className="font-medium">¿Preguntas? Contáctenos: {companyInfo.email} | {companyInfo.phone}</p>
-          <p className="mt-1 text-sm opacity-90">Gracias por su preferencia.</p>
-        </div>
+      <div className="mt-8 text-center text-sm text-neutral-500 border-t border-gray-100 pt-6">
+        <p>¿Preguntas? Contáctenos: {companyInfo.email} | {companyInfo.phone}</p>
+        <p className="mt-1">Gracias por su preferencia.</p>
       </div>
     </div>
   );
