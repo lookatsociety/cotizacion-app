@@ -121,7 +121,7 @@ export default function Sidebar({ mobileMenuOpen, setMobileMenuOpen, sidebarOpen
             </Link>
           </nav>
           
-          <div className="py-2 px-3 mt-6 text-xs font-medium text-neutral-500 uppercase">Preferencias</div>
+          <div className="py-2 px-3 mt-6 text-xs font-medium text-muted-foreground uppercase">Preferencias</div>
           <nav className="space-y-1 px-3">
             <Link href="/settings">
               <a className={isActive("/settings") ? "sidebar-link-active" : "sidebar-link"}>
@@ -144,14 +144,14 @@ export default function Sidebar({ mobileMenuOpen, setMobileMenuOpen, sidebarOpen
           </nav>
         </div>
         
-        <div className="p-3 border-t border-gray-200 space-y-2">
+        <div className="p-3 border-t border-border space-y-2">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-sm text-neutral-600">Modo oscuro</span>
+            <span className="text-sm text-muted-foreground">Modo oscuro</span>
             <ThemeToggle />
           </div>
           <Button 
             variant="ghost" 
-            className="w-full justify-start text-red-500 hover:text-red-600 hover:bg-red-50"
+            className="w-full justify-start text-destructive hover:text-destructive hover:bg-destructive/10"
             onClick={handleLogout}
           >
             <LogOut className="h-4 w-4 mr-2" />
@@ -180,10 +180,10 @@ export default function Sidebar({ mobileMenuOpen, setMobileMenuOpen, sidebarOpen
               <span className="text-xl font-semibold text-foreground">CotizaApp</span>
             </div>
             
-            <div className="p-3 border-b border-gray-200">
+            <div className="p-3 border-b border-border">
               <div className="flex items-center space-x-3 relative group">
                 <div className="relative">
-                  <Avatar className="cursor-pointer hover:ring-2 hover:ring-gray-400 transition-all">
+                  <Avatar className="cursor-pointer hover:ring-2 hover:ring-border transition-all">
                     <AvatarImage src={user?.photoURL || ""} />
                     <AvatarFallback>
                       {user?.displayName?.substring(0, 2) || user?.email?.substring(0, 2) || "U"}
@@ -201,13 +201,13 @@ export default function Sidebar({ mobileMenuOpen, setMobileMenuOpen, sidebarOpen
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="text-sm font-medium truncate">{user?.displayName || user?.email}</div>
-                  <div className="text-xs text-neutral-500">Cuenta Empresarial</div>
+                  <div className="text-xs text-muted-foreground">Cuenta Empresarial</div>
                 </div>
               </div>
             </div>
             
             <div className="flex-1 overflow-y-auto py-2">
-              <div className="py-2 px-3 text-xs font-medium text-neutral-500 uppercase">Navegación</div>
+              <div className="py-2 px-3 text-xs font-medium text-muted-foreground uppercase">Navegación</div>
               <nav className="space-y-1 px-3">
                 <Link href="/">
                   <a 
@@ -256,7 +256,7 @@ export default function Sidebar({ mobileMenuOpen, setMobileMenuOpen, sidebarOpen
                 </Link>
               </nav>
               
-              <div className="py-2 px-3 mt-6 text-xs font-medium text-neutral-500 uppercase">Preferencias</div>
+              <div className="py-2 px-3 mt-6 text-xs font-medium text-muted-foreground uppercase">Preferencias</div>
               <nav className="space-y-1 px-3">
                 <Link href="/settings">
                   <a 
@@ -288,14 +288,14 @@ export default function Sidebar({ mobileMenuOpen, setMobileMenuOpen, sidebarOpen
               </nav>
             </div>
             
-            <div className="p-3 border-t border-gray-200 space-y-2">
+            <div className="p-3 border-t border-border space-y-2">
               <div className="flex items-center justify-between mb-2">
-                <span className="text-sm text-neutral-600">Modo oscuro</span>
+                <span className="text-sm text-muted-foreground">Modo oscuro</span>
                 <ThemeToggle />
               </div>
               <Button 
                 variant="ghost" 
-                className="w-full justify-start text-red-500 hover:text-red-600 hover:bg-red-50"
+                className="w-full justify-start text-destructive hover:text-destructive hover:bg-destructive/10"
                 onClick={handleLogout}
               >
                 <LogOut className="h-4 w-4 mr-2" />

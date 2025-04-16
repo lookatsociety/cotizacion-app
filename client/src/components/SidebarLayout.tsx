@@ -45,7 +45,7 @@ export default function SidebarLayout({ children }: SidebarLayoutProps) {
   };
 
   return (
-    <div className="flex min-h-screen bg-gray-50">
+    <div className="flex min-h-screen bg-background">
       <Sidebar 
         mobileMenuOpen={mobileMenuOpen} 
         setMobileMenuOpen={setMobileMenuOpen}
@@ -55,7 +55,7 @@ export default function SidebarLayout({ children }: SidebarLayoutProps) {
       {/* Botón para mostrar/ocultar la barra lateral - mismo estilo en todos los dispositivos */}
       <button
         onClick={toggleSidebar}
-        className="fixed top-4 left-4 z-50 w-10 h-10 bg-white border border-gray-200 rounded-md flex items-center justify-center shadow-sm hover:bg-gray-50"
+        className="fixed top-4 left-4 z-50 w-10 h-10 bg-background border border-border rounded-md flex items-center justify-center shadow-sm hover:bg-accent text-foreground"
         aria-label={sidebarOpen ? "Ocultar menú" : "Mostrar menú"}
       >
         {mobileMenuOpen || sidebarOpen ? (
