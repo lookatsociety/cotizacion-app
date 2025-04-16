@@ -1,4 +1,4 @@
-import { useCallback } from "react";
+import { useCallback, useRef } from "react";
 import { QuotationFormData, QuotationWithItems } from "@shared/schema";
 import ProfessionalTemplate from "./templates/ProfessionalTemplate";
 import MinimalistTemplate from "./templates/MinimalistTemplate";
