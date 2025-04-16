@@ -1,4 +1,5 @@
 import { QuotationWithItems } from "@shared/schema";
+import spekLogo from "@/assets/images/spek_logo.png";
 
 interface CreativeTemplateProps {
   quotation: QuotationWithItems;
@@ -41,6 +42,11 @@ export default function CreativeTemplate({
       <div className="bg-gradient-to-r from-secondary-600 to-secondary-500 text-white p-8">
         <div className="flex justify-between items-start">
           <div>
+            <div className="flex items-center gap-4 mb-3">
+              <div className="bg-white p-2 rounded-lg">
+                <img src={spekLogo} alt="SPEK Industrial" className="h-10 object-contain" />
+              </div>
+            </div>
             <h1 className="text-3xl font-bold">COTIZACIÓN</h1>
             <div className="text-white/80 mt-1">Propuesta comercial para {quotation.customerName}</div>
           </div>
