@@ -43,7 +43,7 @@ export default function CreativeTemplate({
         <div className="flex justify-between items-start">
           <div>
             <div className="flex items-center gap-4 mb-3">
-              <div className="bg-white p-4 rounded-lg border-2 border-black">
+              <div className="bg-white p-4 rounded-lg">
                 <img src={spekLogo} alt="SPEK Industrial" className="h-40 object-contain" />
               </div>
             </div>

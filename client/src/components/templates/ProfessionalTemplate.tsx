@@ -42,9 +42,7 @@ export default function ProfessionalTemplate({
       <div className="flex justify-between items-start mb-8">
         <div>
           <div className="flex items-center justify-start">
-            <div className="border-2 border-black rounded-lg p-2">
-              <img src={spekLogo} alt="SPEK Industrial" className="h-40 object-contain" />
-            </div>
+            <img src={spekLogo} alt="SPEK Industrial" className="h-40 object-contain" />
           </div>
           <div className="text-sm text-neutral-500 mt-1 font-mono">#{quotation.quotationNumber}</div>
         </div>
