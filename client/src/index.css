@@ -274,34 +274,64 @@ body.printing {
   height: auto !important;
 }
 
-body.printing .sidebar,
-body.printing header,
-body.printing nav:not(.print-nav),
-body.printing footer,
-body.printing .hidden-print,
-body.printing .bg-gray-50.px-8.py-4.rounded-b-lg {
-  display: none !important;
+body.printing * {
+  visibility: hidden !important;
 }
 
-body.printing .max-w-3xl {
-  max-width: 100% !important;
+body.printing .quotation-template * {
+  visibility: visible !important;
+}
+
+body.printing .quotation-template {
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  visibility: visible !important;
+  display: block !important;
+  background-color: white !important;
   margin: 0 !important;
   padding: 0 !important;
   box-shadow: none !important;
+  border-radius: 0 !important;
+  z-index: 9999 !important;
 }
 
 /* Estilos de impresión */
 @media print {
-  body {
+  @page {
+    size: A4;
+    margin: 1cm;
+  }
+  
+  html, body {
+    width: 210mm;
+    height: 297mm;
     background-color: white !important;
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
   }
   
-  /* Ocultar elementos no necesarios para impresión */
-  header, nav, footer, .sidebar, .mobile-menu-button, 
-  button:not(.print-show), .hidden-print, input, select {
-    display: none !important;
+  body * {
+    visibility: hidden !important;
+  }
+  
+  /* Solo muestra el contenedor de la plantilla de cotización */
+  .quotation-template, .quotation-template * {
+    visibility: visible !important;
+  }
+  
+  .quotation-template {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    box-shadow: none !important;
+    background-color: white !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: visible !important;
   }
   
   /* Asegurar que la cotización ocupe toda la página */
@@ -328,19 +358,6 @@ body.printing .max-w-3xl {
   
   .text-neutral-800, .text-foreground {
     color: #000000 !important;
-  }
-  
-  /* Ajustar el contenedor principal */
-  .max-w-3xl {
-    max-width: 100% !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    box-shadow: none !important;
-  }
-  
-  /* Ocultar controles de exportación */
-  .bg-gray-50.px-8.py-4.rounded-b-lg {
-    display: none !important;
   }
   
   /* Mejora para tablas */

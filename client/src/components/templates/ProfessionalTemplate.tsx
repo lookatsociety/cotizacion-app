@@ -37,7 +37,7 @@ export default function ProfessionalTemplate({
   };
 
   return (
-    <div className="p-8 bg-white rounded-lg shadow-md border-2 border-black">
+    <div className="p-8 bg-white rounded-lg shadow-md border-2 border-black quotation-template">
       {/* Header */}
       <div className="flex justify-between items-start mb-8">
         <div>

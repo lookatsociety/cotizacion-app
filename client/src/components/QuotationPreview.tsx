@@ -48,13 +48,14 @@ export default function QuotationPreview({ quotation }: QuotationPreviewProps) {
   }, [quotation]);
 
   const handlePrintPreview = () => {
-    // Agregar clase al cuerpo para optimizar la impresión
+    // Preparar la página para impresión - ocultar todo excepto la plantilla
     document.body.classList.add('printing');
     
     // Imprimir con un pequeño retraso para permitir que los estilos CSS se apliquen
     setTimeout(() => {
       window.print();
-      // Quitar la clase después de la impresión
+      
+      // Quitar la clase después de la impresión para restaurar la vista normal
       setTimeout(() => {
         document.body.classList.remove('printing');
       }, 500);
