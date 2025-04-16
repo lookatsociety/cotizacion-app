@@ -31,6 +31,23 @@ export default function CustomerSection({ form }: CustomerSectionProps) {
         <div className="grid grid-cols-1 gap-4">
           <FormField
             control={form.control}
+            name="projectName"
+            render={({ field }) => (
+              <FormItem>
+                <label className="form-label">Nombre del Proyecto</label>
+                <FormControl>
+                  <Input 
+                    placeholder="Nombre o título del proyecto" 
+                    {...field} 
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        
+          <FormField
+            control={form.control}
             name="customerName"
             render={({ field }) => (
               <FormItem>
