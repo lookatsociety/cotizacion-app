@@ -8,7 +8,7 @@
   }
 
   body {
-    @apply font-sans antialiased bg-gray-50 text-neutral-800;
+    @apply font-sans antialiased bg-background text-foreground;
   }
 
   :root {
@@ -222,19 +222,19 @@
   }
 
   .sidebar-link {
-    @apply flex items-center px-2 py-2 text-sm rounded-md text-neutral-600 hover:bg-gray-100;
+    @apply flex items-center px-2 py-2 text-sm rounded-md text-muted-foreground hover:bg-muted;
   }
   
   .sidebar-link-active {
-    @apply flex items-center px-2 py-2 text-sm rounded-md bg-blue-50 text-blue-600 font-medium;
+    @apply flex items-center px-2 py-2 text-sm rounded-md bg-accent text-accent-foreground font-medium;
   }
   
   .sidebar-icon {
-    @apply w-5 h-5 text-neutral-400;
+    @apply w-5 h-5 text-muted-foreground;
   }
   
   .sidebar-icon-active {
-    @apply w-5 h-5 text-blue-600;
+    @apply w-5 h-5 text-accent-foreground;
   }
   
   /* Botón de menú móvil fijo */

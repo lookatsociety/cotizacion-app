@@ -10,6 +10,7 @@ import { useEffect } from "react";
 import SidebarLayout from "@/components/SidebarLayout";
 import { FileText } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { ThemeProvider } from "@/components/ThemeProvider";
 
 // Componente para verificar la autenticación
 function ProtectedRoute({ component: Component }: { component: React.ComponentType }) {
@@ -97,10 +98,12 @@ function Router() {
 
 function App() {
   return (
-    <AuthProvider>
-      <Router />
-      <Toaster />
-    </AuthProvider>
+    <ThemeProvider>
+      <AuthProvider>
+        <Router />
+        <Toaster />
+      </AuthProvider>
+    </ThemeProvider>
   );
 }
 
