@@ -44,7 +44,7 @@ export default function CreativeTemplate({
           <div>
             <div className="flex items-center gap-4 mb-3">
               <div className="bg-white p-4 rounded-lg">
-                <img src={spekLogo} alt="SPEK Industrial" className="h-28 object-contain" />
+                <img src={spekLogo} alt="SPEK Industrial" className="h-40 object-contain" />
               </div>
             </div>
             <div className="text-white/80 mt-1">Propuesta comercial para {quotation.customerName}</div>
