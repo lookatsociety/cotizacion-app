@@ -1,4 +1,4 @@
-import * as React from "react";
+import { useState, useEffect } from "react";
 import { Link, useLocation } from "wouter";
 import { useAuth } from "@/lib/auth";
 import { 
@@ -29,12 +29,12 @@ export default function SidebarLayout({ children }: SidebarLayoutProps) {
   const [location] = useLocation();
   const { user, logout } = useAuth();
   const { toast } = useToast();
-  const [isDarkMode, setIsDarkMode] = React.useState(false);
-  const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
-  const [isMobile, setIsMobile] = React.useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
   // Detectar si es dispositivo móvil
-  React.useEffect(() => {
+  useEffect(() => {
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 768);
     };
@@ -45,10 +45,6 @@ export default function SidebarLayout({ children }: SidebarLayoutProps) {
     
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
-
-  const toggleMobileMenu = () => {
-    setMobileMenuOpen(!mobileMenuOpen);
-  };
 
   const handleLogout = async () => {
     try {
@@ -80,26 +76,6 @@ export default function SidebarLayout({ children }: SidebarLayoutProps) {
 
   return (
     <div className="flex h-screen overflow-hidden bg-gray-50">
-      {/* HEADER MÓVIL FIJO */}
-      {isMobile && (
-        <header className="fixed top-0 left-0 right-0 h-14 bg-white shadow-sm z-50 flex items-center justify-between px-4">
-          <div className="flex items-center">
-            <div className="w-8 h-8 rounded-md flex items-center justify-center bg-primary-600 text-white">
-              <FileText size={18} />
-            </div>
-            <span className="ml-2 text-lg font-semibold">CotizaApp</span>
-          </div>
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={toggleMobileMenu}
-            className="h-10 w-10 rounded-full"
-          >
-            <Menu size={24} />
-          </Button>
-        </header>
-      )}
-
       {/* SIDEBAR PARA DESKTOP */}
       {!isMobile && (
         <aside className="w-64 bg-white border-r border-gray-200 flex flex-col h-full">
@@ -217,9 +193,20 @@ export default function SidebarLayout({ children }: SidebarLayoutProps) {
         </aside>
       )}
       
+      {/* BOTÓN PARA ABRIR MENÚ MÓVIL */}
+      {isMobile && (
+        <button
+          onClick={() => setMobileMenuOpen(true)}
+          className="fixed top-4 right-4 z-50 bg-primary-600 text-white p-2 rounded-full shadow-lg md:hidden"
+          aria-label="Abrir menú"
+        >
+          <Menu size={24} />
+        </button>
+      )}
+      
       {/* MENÚ DESPLEGABLE MÓVIL */}
-      {isMobile && mobileMenuOpen && (
-        <>
+      {mobileMenuOpen && (
+        <div className="md:hidden">
           {/* Overlay para cerrar el menú */}
           <div 
             className="fixed inset-0 bg-black/50 z-40"
@@ -347,14 +334,11 @@ export default function SidebarLayout({ children }: SidebarLayoutProps) {
               </Button>
             </div>
           </div>
-        </>
+        </div>
       )}
       
       {/* CONTENIDO PRINCIPAL */}
       <main className="flex-1 flex flex-col overflow-hidden">
-        {/* Espacio para el encabezado móvil */}
-        {isMobile && <div className="h-14"></div>}
-        
         {/* Área de contenido */}
         <div className="flex-1 overflow-auto p-4 md:p-6">
           {children}
