@@ -42,7 +42,15 @@ export default function MinimalistTemplate({
       <div className="border-b pb-6 mb-6">
         <div className="flex justify-between items-center">
           <div className="flex items-center">
-            <img src={spekLogo} alt="SPEK Industrial" className="h-40 object-contain" />
+            <div>
+              <img src={spekLogo} alt="SPEK Industrial" className="h-40 object-contain mb-3" />
+              <div className="text-sm text-gray-600 mt-3">
+                Por medio de la presente S.P.E.K le presenta a usted la cotización de los trabajos solicitados
+              </div>
+              <div className="mt-2">
+                <span className="font-bold">Proyecto:</span> {quotation.projectName || "Servicios SPEK Industrial"}
+              </div>
+            </div>
           </div>
           <div className="text-sm text-right">
             <div className="font-medium">{companyInfo.name}</div>

@@ -36,6 +36,7 @@ export default function QuotationForm({ onFormDataChange }: QuotationFormProps) 
       customerEmail: "",
       customerPhone: "",
       customerAddress: "",
+      projectName: "",
       subtotal: 0,
       taxRate: 16,
       taxAmount: 0,

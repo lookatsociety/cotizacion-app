@@ -47,7 +47,12 @@ export default function CreativeTemplate({
                 <img src={spekLogo} alt="SPEK Industrial" className="h-40 object-contain" />
               </div>
             </div>
-            <div className="text-white/80 mt-1">Propuesta comercial para {quotation.customerName}</div>
+            <div className="text-white/90 mt-4">
+              Por medio de la presente S.P.E.K le presenta a usted la cotización de los trabajos solicitados
+            </div>
+            <div className="mt-2 text-white">
+              <span className="font-bold">Proyecto:</span> {quotation.projectName || "Servicios SPEK Industrial"}
+            </div>
           </div>
           <div className="text-right">
             <div className="font-bold text-lg">{companyInfo.name}</div>

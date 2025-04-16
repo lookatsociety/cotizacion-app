@@ -14,7 +14,7 @@ interface ProfessionalTemplateProps {
 export default function ProfessionalTemplate({ 
   quotation, 
   companyInfo = {
-    name: "SPEK",
+    name: "Mi Empresa SRL",
     email: "contacto@miempresa.com",
     phone: "+52 (123) 456-7890",
     address: "Av. Principal 123, Ciudad de México, CDMX, 06000",
@@ -37,19 +37,14 @@ export default function ProfessionalTemplate({
   };
 
   return (
-    <div className="p-8 bg-white rounded-lg shadow-md border-2 border-black">
+    <div className="p-8 bg-white rounded-lg shadow-md">
       {/* Header */}
       <div className="flex justify-between items-start mb-8">
         <div>
           <div className="flex items-center justify-start">
-            <img src={spekLogo} alt="SPEK Industrial" className="h-40 object-contain" />
+            <img src={spekLogo} alt="SPEK Industrial" className="h-40 object-contain mb-2" />
           </div>
-          <div className="text-sm text-neutral-600 mt-3">
-            Por medio de la presente S.P.E.K le presenta a usted la cotización de los trabajos solicitados
-          </div>
-          <div className="mt-2">
-            <span className="font-bold">Proyecto:</span> {quotation.projectName || "Servicios SPEK Industrial"}
-          </div>
+          <div className="text-sm text-neutral-500 mt-1 font-mono">#{quotation.quotationNumber}</div>
         </div>
         
         <div>
