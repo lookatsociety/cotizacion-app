@@ -60,13 +60,24 @@ export default function Sidebar({ mobileMenuOpen, setMobileMenuOpen, sidebarOpen
         </div>
         
         <div className="p-3 border-b border-gray-200">
-          <div className="flex items-center space-x-3">
-            <Avatar>
-              <AvatarImage src={user?.photoURL || ""} />
-              <AvatarFallback>
-                {user?.displayName?.substring(0, 2) || user?.email?.substring(0, 2) || "U"}
-              </AvatarFallback>
-            </Avatar>
+          <div className="flex items-center space-x-3 relative group">
+            <div className="relative">
+              <Avatar className="cursor-pointer hover:ring-2 hover:ring-blue-500 transition-all">
+                <AvatarImage src={user?.photoURL || ""} />
+                <AvatarFallback>
+                  {user?.displayName?.substring(0, 2) || user?.email?.substring(0, 2) || "U"}
+                </AvatarFallback>
+              </Avatar>
+              <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                <button 
+                  className="w-full h-full rounded-full bg-black/30 flex items-center justify-center text-white"
+                  onClick={handleLogout}
+                  title="Cerrar sesión"
+                >
+                  <LogOut size={14} />
+                </button>
+              </div>
+            </div>
             <div className="flex-1 min-w-0">
               <div className="text-sm font-medium truncate">{user?.displayName || user?.email}</div>
               <div className="text-xs text-neutral-500">Cuenta Empresarial</div>
@@ -173,13 +184,24 @@ export default function Sidebar({ mobileMenuOpen, setMobileMenuOpen, sidebarOpen
             </div>
             
             <div className="p-3 border-b border-gray-200">
-              <div className="flex items-center space-x-3">
-                <Avatar>
-                  <AvatarImage src={user?.photoURL || ""} />
-                  <AvatarFallback>
-                    {user?.displayName?.substring(0, 2) || user?.email?.substring(0, 2) || "U"}
-                  </AvatarFallback>
-                </Avatar>
+              <div className="flex items-center space-x-3 relative group">
+                <div className="relative">
+                  <Avatar className="cursor-pointer hover:ring-2 hover:ring-blue-500 transition-all">
+                    <AvatarImage src={user?.photoURL || ""} />
+                    <AvatarFallback>
+                      {user?.displayName?.substring(0, 2) || user?.email?.substring(0, 2) || "U"}
+                    </AvatarFallback>
+                  </Avatar>
+                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                    <button 
+                      className="w-full h-full rounded-full bg-black/30 flex items-center justify-center text-white"
+                      onClick={handleLogout}
+                      title="Cerrar sesión"
+                    >
+                      <LogOut size={14} />
+                    </button>
+                  </div>
+                </div>
                 <div className="flex-1 min-w-0">
                   <div className="text-sm font-medium truncate">{user?.displayName || user?.email}</div>
                   <div className="text-xs text-neutral-500">Cuenta Empresarial</div>
