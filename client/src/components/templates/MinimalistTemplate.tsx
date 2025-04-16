@@ -41,13 +41,13 @@ export default function MinimalistTemplate({
       {/* Header */}
       <div className="border-b pb-6 mb-6">
         <div className="flex justify-between items-center">
-          <div className="flex items-center gap-4">
-            <img src={spekLogo} alt="SPEK Industrial" className="h-11 object-contain" />
-            <h1 className="text-2xl font-light text-gray-800">COTIZACIÓN</h1>
+          <div className="flex items-center">
+            <img src={spekLogo} alt="SPEK Industrial" className="h-20 object-contain" />
           </div>
           <div className="text-sm text-right">
             <div className="font-medium">{companyInfo.name}</div>
             <div className="text-gray-500">{companyInfo.email}</div>
+            <div className="mt-2 font-mono text-gray-600 text-xs">FOLIO: #{quotation.quotationNumber}</div>
           </div>
         </div>
       </div>

@@ -41,12 +41,15 @@ export default function ProfessionalTemplate({
       {/* Header */}
       <div className="flex justify-between items-start mb-8">
         <div>
-          <h1 className="text-2xl font-bold text-primary-600">COTIZACIÓN</h1>
+          <div className="flex items-center justify-start">
+            <img src={spekLogo} alt="SPEK Industrial" className="h-20 object-contain mb-2" />
+          </div>
           <div className="text-sm text-neutral-500 mt-1 font-mono">#{quotation.quotationNumber}</div>
         </div>
         
-        <div className="flex items-center justify-center h-16">
-          <img src={spekLogo} alt="SPEK Industrial" className="h-14 object-contain" />
+        <div>
+          <div className="text-xl font-bold text-primary-600 text-right">FOLIO</div>
+          <div className="text-neutral-800 font-mono text-right">#{quotation.quotationNumber}</div>
         </div>
       </div>
       
