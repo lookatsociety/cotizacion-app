@@ -37,7 +37,7 @@ export default function ProfessionalTemplate({
   };
 
   return (
-    <div className="p-8 bg-white rounded-lg shadow-md border-2 border-black quotation-template">
+    <div className="p-8 bg-white rounded-sm shadow-md border border-gray-300 quotation-template" style={{ aspectRatio: '210/297', width: '100%', maxWidth: '210mm', margin: '0 auto' }}>
       {/* Header */}
       <div className="flex justify-between items-start mb-8">
         <div>

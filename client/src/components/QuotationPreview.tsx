@@ -69,13 +69,15 @@ export default function QuotationPreview({ quotation }: QuotationPreviewProps) {
   };
 
   return (
-    <div className="bg-white shadow-md rounded-lg mx-auto max-w-3xl">
-      <div className="relative">
-        {renderTemplate()}
+    <div className="mx-auto max-w-3xl">
+      <div className="bg-gray-100 p-8 rounded-lg">
+        <div className="relative shadow-2xl" style={{ width: '100%', maxWidth: '210mm', margin: '0 auto', pageBreakInside: 'avoid' }}>
+          {renderTemplate()}
+        </div>
       </div>
       
       {/* Export Options */}
-      <div className="bg-gray-50 px-8 py-4 rounded-b-lg border-t border-gray-200 flex justify-between items-center">
+      <div className="bg-white px-8 py-4 rounded-lg border border-gray-200 mt-4 flex justify-between items-center">
         <div className="flex items-center space-x-2">
           <span className="text-sm text-neutral-600">Plantilla:</span>
           <span className="text-sm font-medium capitalize">
