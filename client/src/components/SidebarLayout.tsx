@@ -52,19 +52,13 @@ export default function SidebarLayout({ children }: SidebarLayoutProps) {
         sidebarOpen={sidebarOpen}
       />
       
-      {/* Botón para mostrar/ocultar la barra lateral - con estilos adaptados según el dispositivo */}
+      {/* Botón para mostrar/ocultar la barra lateral - mismo estilo en todos los dispositivos */}
       <button
         onClick={toggleSidebar}
-        className={`fixed z-50 flex items-center justify-center shadow-sm ${
-          isMobile 
-            ? "bottom-4 right-4 w-12 h-12 bg-blue-600 text-white rounded-full" 
-            : "top-4 left-4 w-10 h-10 bg-white border border-gray-200 rounded-md hover:bg-gray-50"
-        }`}
+        className="fixed top-4 left-4 z-50 w-10 h-10 bg-white border border-gray-200 rounded-md flex items-center justify-center shadow-sm hover:bg-gray-50"
         aria-label={sidebarOpen ? "Ocultar menú" : "Mostrar menú"}
       >
-        {isMobile ? (
-          mobileMenuOpen ? <X size={24} /> : <Menu size={24} />
-        ) : sidebarOpen ? (
+        {mobileMenuOpen || sidebarOpen ? (
           <X size={20} />
         ) : (
           <Menu size={20} />

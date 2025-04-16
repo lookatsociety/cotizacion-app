@@ -62,7 +62,7 @@ export default function Sidebar({ mobileMenuOpen, setMobileMenuOpen, sidebarOpen
         <div className="p-3 border-b border-gray-200">
           <div className="flex items-center space-x-3 relative group">
             <div className="relative">
-              <Avatar className="cursor-pointer hover:ring-2 hover:ring-blue-500 transition-all">
+              <Avatar className="cursor-pointer hover:ring-2 hover:ring-gray-400 transition-all">
                 <AvatarImage src={user?.photoURL || ""} />
                 <AvatarFallback>
                   {user?.displayName?.substring(0, 2) || user?.email?.substring(0, 2) || "U"}
@@ -167,26 +167,18 @@ export default function Sidebar({ mobileMenuOpen, setMobileMenuOpen, sidebarOpen
           />
           
           {/* Sidebar Panel */}
-          <div className="fixed inset-y-0 left-0 w-[280px] bg-white z-50 flex flex-col shadow-lg">
-            <div className="p-4 border-b border-gray-200 flex items-center justify-between">
-              <div className="flex items-center space-x-3">
-                <div className="w-8 h-8 rounded-md flex items-center justify-center bg-primary-600 text-white">
-                  <FileText size={18} />
-                </div>
-                <span className="text-xl font-semibold text-neutral-800">CotizaApp</span>
+          <div className="fixed inset-y-0 left-0 w-64 bg-white z-50 flex flex-col shadow-lg">
+            <div className="p-4 border-b border-gray-200 flex items-center space-x-3">
+              <div className="w-8 h-8 rounded-md flex items-center justify-center bg-primary-600 text-white">
+                <FileText size={18} />
               </div>
-              <button
-                className="p-2 rounded-full hover:bg-gray-100"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                <X size={18} />
-              </button>
+              <span className="text-xl font-semibold text-neutral-800">CotizaApp</span>
             </div>
             
             <div className="p-3 border-b border-gray-200">
               <div className="flex items-center space-x-3 relative group">
                 <div className="relative">
-                  <Avatar className="cursor-pointer hover:ring-2 hover:ring-blue-500 transition-all">
+                  <Avatar className="cursor-pointer hover:ring-2 hover:ring-gray-400 transition-all">
                     <AvatarImage src={user?.photoURL || ""} />
                     <AvatarFallback>
                       {user?.displayName?.substring(0, 2) || user?.email?.substring(0, 2) || "U"}
