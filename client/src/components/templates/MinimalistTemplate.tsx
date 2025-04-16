@@ -37,7 +37,7 @@ export default function MinimalistTemplate({
   };
 
   return (
-    <div className="p-8 bg-white rounded-lg shadow-md max-w-4xl mx-auto">
+    <div className="p-8 bg-white rounded-lg shadow-md max-w-4xl mx-auto border-2 border-black">
       {/* Header */}
       <div className="border-b pb-6 mb-6">
         <div className="flex justify-between items-center">

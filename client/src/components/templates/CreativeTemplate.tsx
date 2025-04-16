@@ -37,7 +37,7 @@ export default function CreativeTemplate({
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-md overflow-hidden">
+    <div className="bg-white rounded-lg shadow-md overflow-hidden border-2 border-black">
       {/* Header */}
       <div className="bg-gradient-to-r from-secondary-600 to-secondary-500 text-white p-8">
         <div className="flex justify-between items-start">
