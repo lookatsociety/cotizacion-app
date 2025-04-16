@@ -193,16 +193,14 @@ export default function SidebarLayout({ children }: SidebarLayoutProps) {
         </aside>
       )}
       
-      {/* BOTÓN PARA ABRIR MENÚ MÓVIL */}
-      {isMobile && (
+      {/* BOTÓN PARA ABRIR MENÚ MÓVIL - siempre visible en móvil */}
         <button
           onClick={() => setMobileMenuOpen(true)}
-          className="fixed top-4 right-4 z-50 bg-primary-600 text-white p-2 rounded-full shadow-lg md:hidden"
+          className="mobile-menu-button"
           aria-label="Abrir menú"
         >
           <Menu size={24} />
         </button>
-      )}
       
       {/* MENÚ DESPLEGABLE MÓVIL */}
       {mobileMenuOpen && (

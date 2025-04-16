@@ -236,4 +236,29 @@
   .sidebar-icon-active {
     @apply w-5 h-5 text-blue-600;
   }
+  
+  /* Botón de menú móvil fijo */
+  .mobile-menu-button {
+    position: fixed !important;
+    top: 1rem !important;
+    right: 1rem !important;
+    z-index: 9999 !important;
+    width: 3rem !important;
+    height: 3rem !important;
+    border-radius: 50% !important;
+    background-color: #2563eb !important;
+    color: white !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 2px 4px rgba(0, 0, 0, 0.06) !important;
+    border: none !important;
+    cursor: pointer !important;
+  }
+  
+  @media (min-width: 768px) {
+    .mobile-menu-button {
+      display: none !important;
+    }
+  }
 }
