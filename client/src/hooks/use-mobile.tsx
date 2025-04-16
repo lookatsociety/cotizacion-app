@@ -1,57 +1,41 @@
-import * as React from "react"
-
-const MOBILE_BREAKPOINT = 768
+import { useState, useEffect } from 'react';
 
 export function useIsMobile() {
-  // Por defecto, asumimos que es desktop hasta que se compruebe
-  const [isMobile, setIsMobile] = React.useState(false)
+  const [isMobile, setIsMobile] = useState(false);
 
-  React.useEffect(() => {
-    // Función para comprobar si es un dispositivo móvil
-    const checkIfMobile = () => {
-      if (typeof window !== 'undefined') {
-        setIsMobile(window.innerWidth < MOBILE_BREAKPOINT)
-      }
-    }
-
-    // Comprobar inmediatamente
-    checkIfMobile()
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
     
-    // Añadir listener para redimensionamientos
-    window.addEventListener('resize', checkIfMobile)
+    // Comprobar al inicio y con cada cambio de tamaño
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
     
-    // Limpieza al desmontar
-    return () => window.removeEventListener('resize', checkIfMobile)
-  }, [])
-
-  return isMobile
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+  
+  return isMobile;
 }
 
-// Hook auxiliar para controlar la barra lateral
 export function useSidebar(initialState = false) {
-  const isMobile = useIsMobile()
-  const [isOpen, setIsOpen] = React.useState(!isMobile)
+  const [isOpen, setIsOpen] = useState(initialState);
+  const isMobile = useIsMobile();
   
-  // Ajustar apertura según tamaño de pantalla
-  React.useEffect(() => {
+  // Si cambia a móvil, cerrar el sidebar
+  useEffect(() => {
     if (isMobile) {
-      setIsOpen(false)
+      setIsOpen(false);
     } else {
-      setIsOpen(true)
+      setIsOpen(true);
     }
-  }, [isMobile])
-  
-  // Funciones auxiliares
-  const open = () => setIsOpen(true)
-  const close = () => setIsOpen(false)
-  const toggle = () => setIsOpen(prev => !prev)
+  }, [isMobile]);
   
   return {
     isOpen,
-    setIsOpen,
-    open,
-    close,
-    toggle,
+    toggle: () => setIsOpen(!isOpen),
+    open: () => setIsOpen(true),
+    close: () => setIsOpen(false),
     isMobile
-  }
+  };
 }

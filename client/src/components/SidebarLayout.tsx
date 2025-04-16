@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Link, useLocation } from "wouter";
 import { useAuth } from "@/lib/auth";
 import { 
@@ -10,7 +10,6 @@ import {
   Settings, 
   File, 
   HelpCircle, 
-  ChevronDown, 
   LogOut, 
   Moon, 
   Sun,
@@ -20,6 +19,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useToast } from "@/hooks/use-toast";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface SidebarLayoutProps {
   children: React.ReactNode;
@@ -31,20 +31,7 @@ export default function SidebarLayout({ children }: SidebarLayoutProps) {
   const { toast } = useToast();
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
-
-  // Detectar si es dispositivo móvil
-  useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-    
-    // Comprobar al inicio y con cada cambio de tamaño
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    
-    return () => window.removeEventListener('resize', checkMobile);
-  }, []);
+  const isMobile = useIsMobile();
 
   const handleLogout = async () => {
     try {
@@ -74,10 +61,95 @@ export default function SidebarLayout({ children }: SidebarLayoutProps) {
     return location === path;
   };
 
+  // Contenido de la navegación
+  const navLinks = (
+    <>
+      <div className="py-2 px-3 text-xs font-medium text-neutral-500 uppercase">Navegación</div>
+      <nav className="space-y-1 px-3">
+        <Link href="/">
+          <a 
+            className={isActive("/") ? "sidebar-link-active" : "sidebar-link"} 
+            onClick={() => setMobileMenuOpen(false)}
+          >
+            <LayoutDashboard className={isActive("/") ? "sidebar-icon-active" : "sidebar-icon"} />
+            <span className="ml-3">Dashboard</span>
+          </a>
+        </Link>
+        <Link href="/quotations">
+          <a 
+            className={isActive("/quotations") || isActive("/quotations/new") ? "sidebar-link-active" : "sidebar-link"} 
+            onClick={() => setMobileMenuOpen(false)}
+          >
+            <FileText className={isActive("/quotations") || isActive("/quotations/new") ? "sidebar-icon-active" : "sidebar-icon"} />
+            <span className="ml-3">Cotizaciones</span>
+          </a>
+        </Link>
+        <Link href="/customers">
+          <a 
+            className={isActive("/customers") ? "sidebar-link-active" : "sidebar-link"} 
+            onClick={() => setMobileMenuOpen(false)}
+          >
+            <Users className={isActive("/customers") ? "sidebar-icon-active" : "sidebar-icon"} />
+            <span className="ml-3">Clientes</span>
+          </a>
+        </Link>
+        <Link href="/products">
+          <a 
+            className={isActive("/products") ? "sidebar-link-active" : "sidebar-link"} 
+            onClick={() => setMobileMenuOpen(false)}
+          >
+            <Package className={isActive("/products") ? "sidebar-icon-active" : "sidebar-icon"} />
+            <span className="ml-3">Productos</span>
+          </a>
+        </Link>
+        <Link href="/reports">
+          <a 
+            className={isActive("/reports") ? "sidebar-link-active" : "sidebar-link"} 
+            onClick={() => setMobileMenuOpen(false)}
+          >
+            <BarChart className={isActive("/reports") ? "sidebar-icon-active" : "sidebar-icon"} />
+            <span className="ml-3">Reportes</span>
+          </a>
+        </Link>
+      </nav>
+
+      <div className="py-2 px-3 mt-6 text-xs font-medium text-neutral-500 uppercase">Preferencias</div>
+      <nav className="space-y-1 px-3">
+        <Link href="/settings">
+          <a 
+            className={isActive("/settings") ? "sidebar-link-active" : "sidebar-link"} 
+            onClick={() => setMobileMenuOpen(false)}
+          >
+            <Settings className={isActive("/settings") ? "sidebar-icon-active" : "sidebar-icon"} />
+            <span className="ml-3">Configuración</span>
+          </a>
+        </Link>
+        <Link href="/templates">
+          <a 
+            className={isActive("/templates") ? "sidebar-link-active" : "sidebar-link"} 
+            onClick={() => setMobileMenuOpen(false)}
+          >
+            <File className={isActive("/templates") ? "sidebar-icon-active" : "sidebar-icon"} />
+            <span className="ml-3">Plantillas</span>
+          </a>
+        </Link>
+        <Link href="/help">
+          <a 
+            className={isActive("/help") ? "sidebar-link-active" : "sidebar-link"} 
+            onClick={() => setMobileMenuOpen(false)}
+          >
+            <HelpCircle className={isActive("/help") ? "sidebar-icon-active" : "sidebar-icon"} />
+            <span className="ml-3">Ayuda</span>
+          </a>
+        </Link>
+      </nav>
+    </>
+  );
+
   return (
     <div className="flex h-screen overflow-hidden bg-gray-50">
-      {/* SIDEBAR PARA DESKTOP */}
-      {!isMobile && (
+      {/* SIDEBAR PARA DESKTOP - Solo visible en pantallas medianas y grandes */}
+      <div className="hidden md:block">
         <aside className="w-64 bg-white border-r border-gray-200 flex flex-col h-full">
           <div className="p-4 border-b border-gray-200 flex items-center space-x-3">
             <div className="w-8 h-8 rounded-md flex items-center justify-center bg-primary-600 text-white">
@@ -98,68 +170,11 @@ export default function SidebarLayout({ children }: SidebarLayoutProps) {
                 <div className="text-sm font-medium truncate">{user?.displayName || user?.email}</div>
                 <div className="text-xs text-neutral-500">Cuenta Empresarial</div>
               </div>
-              <Button variant="ghost" size="icon" className="h-6 w-6 flex-shrink-0">
-                <ChevronDown className="h-4 w-4 text-neutral-400" />
-              </Button>
             </div>
           </div>
           
           <div className="flex-1 overflow-y-auto">
-            <div className="py-2 px-3 text-xs font-medium text-neutral-500 uppercase">Navegación</div>
-            <nav className="space-y-1 px-3">
-              <Link href="/">
-                <a className={isActive("/") ? "sidebar-link-active" : "sidebar-link"}>
-                  <LayoutDashboard className={isActive("/") ? "sidebar-icon-active" : "sidebar-icon"} />
-                  <span className="ml-3">Dashboard</span>
-                </a>
-              </Link>
-              <Link href="/quotations">
-                <a className={isActive("/quotations") || isActive("/quotations/new") ? "sidebar-link-active" : "sidebar-link"}>
-                  <FileText className={isActive("/quotations") || isActive("/quotations/new") ? "sidebar-icon-active" : "sidebar-icon"} />
-                  <span className="ml-3">Cotizaciones</span>
-                </a>
-              </Link>
-              <Link href="/customers">
-                <a className={isActive("/customers") ? "sidebar-link-active" : "sidebar-link"}>
-                  <Users className={isActive("/customers") ? "sidebar-icon-active" : "sidebar-icon"} />
-                  <span className="ml-3">Clientes</span>
-                </a>
-              </Link>
-              <Link href="/products">
-                <a className={isActive("/products") ? "sidebar-link-active" : "sidebar-link"}>
-                  <Package className={isActive("/products") ? "sidebar-icon-active" : "sidebar-icon"} />
-                  <span className="ml-3">Productos</span>
-                </a>
-              </Link>
-              <Link href="/reports">
-                <a className={isActive("/reports") ? "sidebar-link-active" : "sidebar-link"}>
-                  <BarChart className={isActive("/reports") ? "sidebar-icon-active" : "sidebar-icon"} />
-                  <span className="ml-3">Reportes</span>
-                </a>
-              </Link>
-            </nav>
-            
-            <div className="py-2 px-3 mt-6 text-xs font-medium text-neutral-500 uppercase">Preferencias</div>
-            <nav className="space-y-1 px-3">
-              <Link href="/settings">
-                <a className={isActive("/settings") ? "sidebar-link-active" : "sidebar-link"}>
-                  <Settings className={isActive("/settings") ? "sidebar-icon-active" : "sidebar-icon"} />
-                  <span className="ml-3">Configuración</span>
-                </a>
-              </Link>
-              <Link href="/templates">
-                <a className={isActive("/templates") ? "sidebar-link-active" : "sidebar-link"}>
-                  <File className={isActive("/templates") ? "sidebar-icon-active" : "sidebar-icon"} />
-                  <span className="ml-3">Plantillas</span>
-                </a>
-              </Link>
-              <Link href="/help">
-                <a className={isActive("/help") ? "sidebar-link-active" : "sidebar-link"}>
-                  <HelpCircle className={isActive("/help") ? "sidebar-icon-active" : "sidebar-icon"} />
-                  <span className="ml-3">Ayuda</span>
-                </a>
-              </Link>
-            </nav>
+            {navLinks}
           </div>
           
           <div className="p-3 border-t border-gray-200 space-y-2">
@@ -191,18 +206,16 @@ export default function SidebarLayout({ children }: SidebarLayoutProps) {
             </Button>
           </div>
         </aside>
-      )}
-      
-      {/* BOTÓN PARA ABRIR MENÚ MÓVIL - siempre visible en dispositivos pequeños */}
-      <div className="md:hidden">
-        <button
-          onClick={() => setMobileMenuOpen(true)}
-          className="fixed top-4 right-4 z-50 bg-primary-600 text-white p-2 rounded-full shadow-lg"
-          aria-label="Abrir menú"
-        >
-          <Menu size={24} />
-        </button>
       </div>
+      
+      {/* BOTÓN PARA ABRIR MENÚ MÓVIL - Solo visible en dispositivos pequeños */}
+      <button
+        onClick={() => setMobileMenuOpen(true)}
+        className="fixed top-4 right-4 z-50 w-12 h-12 bg-blue-600 text-white rounded-full flex items-center justify-center shadow-lg md:hidden"
+        aria-label="Abrir menú"
+      >
+        <Menu size={24} />
+      </button>
       
       {/* MENÚ DESPLEGABLE MÓVIL */}
       {mobileMenuOpen && (
@@ -248,61 +261,7 @@ export default function SidebarLayout({ children }: SidebarLayoutProps) {
             </div>
             
             <div className="flex-1 overflow-y-auto">
-              <div className="py-2 px-3 text-xs font-medium text-neutral-500 uppercase">Navegación</div>
-              <nav className="space-y-1 px-3">
-                <Link href="/">
-                  <a className={isActive("/") ? "sidebar-link-active" : "sidebar-link"} onClick={() => setMobileMenuOpen(false)}>
-                    <LayoutDashboard className={isActive("/") ? "sidebar-icon-active" : "sidebar-icon"} />
-                    <span className="ml-3">Dashboard</span>
-                  </a>
-                </Link>
-                <Link href="/quotations">
-                  <a className={isActive("/quotations") || isActive("/quotations/new") ? "sidebar-link-active" : "sidebar-link"} onClick={() => setMobileMenuOpen(false)}>
-                    <FileText className={isActive("/quotations") || isActive("/quotations/new") ? "sidebar-icon-active" : "sidebar-icon"} />
-                    <span className="ml-3">Cotizaciones</span>
-                  </a>
-                </Link>
-                <Link href="/customers">
-                  <a className={isActive("/customers") ? "sidebar-link-active" : "sidebar-link"} onClick={() => setMobileMenuOpen(false)}>
-                    <Users className={isActive("/customers") ? "sidebar-icon-active" : "sidebar-icon"} />
-                    <span className="ml-3">Clientes</span>
-                  </a>
-                </Link>
-                <Link href="/products">
-                  <a className={isActive("/products") ? "sidebar-link-active" : "sidebar-link"} onClick={() => setMobileMenuOpen(false)}>
-                    <Package className={isActive("/products") ? "sidebar-icon-active" : "sidebar-icon"} />
-                    <span className="ml-3">Productos</span>
-                  </a>
-                </Link>
-                <Link href="/reports">
-                  <a className={isActive("/reports") ? "sidebar-link-active" : "sidebar-link"} onClick={() => setMobileMenuOpen(false)}>
-                    <BarChart className={isActive("/reports") ? "sidebar-icon-active" : "sidebar-icon"} />
-                    <span className="ml-3">Reportes</span>
-                  </a>
-                </Link>
-              </nav>
-              
-              <div className="py-2 px-3 mt-6 text-xs font-medium text-neutral-500 uppercase">Preferencias</div>
-              <nav className="space-y-1 px-3">
-                <Link href="/settings">
-                  <a className={isActive("/settings") ? "sidebar-link-active" : "sidebar-link"} onClick={() => setMobileMenuOpen(false)}>
-                    <Settings className={isActive("/settings") ? "sidebar-icon-active" : "sidebar-icon"} />
-                    <span className="ml-3">Configuración</span>
-                  </a>
-                </Link>
-                <Link href="/templates">
-                  <a className={isActive("/templates") ? "sidebar-link-active" : "sidebar-link"} onClick={() => setMobileMenuOpen(false)}>
-                    <File className={isActive("/templates") ? "sidebar-icon-active" : "sidebar-icon"} />
-                    <span className="ml-3">Plantillas</span>
-                  </a>
-                </Link>
-                <Link href="/help">
-                  <a className={isActive("/help") ? "sidebar-link-active" : "sidebar-link"} onClick={() => setMobileMenuOpen(false)}>
-                    <HelpCircle className={isActive("/help") ? "sidebar-icon-active" : "sidebar-icon"} />
-                    <span className="ml-3">Ayuda</span>
-                  </a>
-                </Link>
-              </nav>
+              {navLinks}
             </div>
             
             <div className="p-3 border-t border-gray-200 space-y-2">
