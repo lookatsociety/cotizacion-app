@@ -1,4 +1,5 @@
 import { QuotationWithItems } from "@shared/schema";
+import spekLogo from "@/assets/images/spek_logo.png";
 
 interface MinimalistTemplateProps {
   quotation: QuotationWithItems;
