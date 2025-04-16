@@ -267,3 +267,95 @@
     }
   }
 }
+
+/* Clase para preparar la impresión */
+body.printing {
+  overflow: auto !important;
+  height: auto !important;
+}
+
+body.printing .sidebar,
+body.printing header,
+body.printing nav:not(.print-nav),
+body.printing footer,
+body.printing .hidden-print,
+body.printing .bg-gray-50.px-8.py-4.rounded-b-lg {
+  display: none !important;
+}
+
+body.printing .max-w-3xl {
+  max-width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  box-shadow: none !important;
+}
+
+/* Estilos de impresión */
+@media print {
+  body {
+    background-color: white !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+  
+  /* Ocultar elementos no necesarios para impresión */
+  header, nav, footer, .sidebar, .mobile-menu-button, 
+  button:not(.print-show), .hidden-print, input, select {
+    display: none !important;
+  }
+  
+  /* Asegurar que la cotización ocupe toda la página */
+  .p-8 {
+    padding: 1rem !important;
+  }
+  
+  /* Asegurar que los bordes se muestren */
+  .border-2 {
+    border-width: 2px !important;
+    border-style: solid !important;
+    border-color: #000 !important;
+  }
+  
+  /* Garantizar que los colores se muestren */
+  .bg-gray-50, .bg-gray-100, .bg-white {
+    background-color: #ffffff !important;
+  }
+  
+  /* Asegurar contraste en textos */
+  .text-neutral-500, .text-neutral-600, .text-muted-foreground {
+    color: #555555 !important;
+  }
+  
+  .text-neutral-800, .text-foreground {
+    color: #000000 !important;
+  }
+  
+  /* Ajustar el contenedor principal */
+  .max-w-3xl {
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    box-shadow: none !important;
+  }
+  
+  /* Ocultar controles de exportación */
+  .bg-gray-50.px-8.py-4.rounded-b-lg {
+    display: none !important;
+  }
+  
+  /* Mejora para tablas */
+  table {
+    width: 100% !important;
+    border-collapse: collapse !important;
+  }
+  
+  th, td {
+    border: 1px solid #dee2e6 !important;
+  }
+  
+  /* Asegurar que las imágenes se impriman */
+  img {
+    max-width: 100% !important;
+    print-color-adjust: exact !important;
+  }
+}

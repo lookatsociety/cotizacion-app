@@ -44,7 +44,17 @@ export default function QuotationPreview({ quotation }: QuotationPreviewProps) {
   }, [quotation]);
 
   const handlePrintPreview = () => {
-    window.print();
+    // Agregar clase al cuerpo para optimizar la impresión
+    document.body.classList.add('printing');
+    
+    // Imprimir con un pequeño retraso para permitir que los estilos CSS se apliquen
+    setTimeout(() => {
+      window.print();
+      // Quitar la clase después de la impresión
+      setTimeout(() => {
+        document.body.classList.remove('printing');
+      }, 500);
+    }, 300);
   };
 
   const handleExportPdf = () => {
