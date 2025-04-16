@@ -14,10 +14,10 @@ interface ProfessionalTemplateProps {
 export default function ProfessionalTemplate({ 
   quotation, 
   companyInfo = {
-    name: "SPEK",
-    email: "contacto@miempresa.com",
-    phone: "+52 (123) 456-7890",
-    address: "Av. Principal 123, Ciudad de México, CDMX, 06000",
+    name: "Servicios y Productos Especializados Krapsol (S.P.E.K) S.A. de C.V.",
+    email: "vgalvan@spekmx.com",
+    phone: "81 1991 1723",
+    address: "www.spekmx.com",
   }
 }: ProfessionalTemplateProps) {
   const formatCurrency = (amount: number) => {
