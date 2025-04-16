@@ -156,6 +156,14 @@ export default function CreativeTemplate({
           </div>
         )}
         
+        {/* Delivery & Payment Terms */}
+        {quotation.deliveryTerms && (
+          <div className="mt-6 bg-gray-50 p-6 rounded-lg border-l-4 border-secondary-500">
+            <div className="font-bold mb-2">Condiciones de entrega y pago</div>
+            <p className="text-gray-700">{quotation.deliveryTerms}</p>
+          </div>
+        )}
+        
         {/* Thank You */}
         <div className="mt-12 text-center">
           <div className="inline-block mx-auto px-8 py-3 bg-secondary-50 text-secondary-600 rounded-full font-medium">

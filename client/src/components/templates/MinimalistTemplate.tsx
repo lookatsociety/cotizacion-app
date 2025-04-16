@@ -162,6 +162,14 @@ export default function MinimalistTemplate({
         </div>
       )}
       
+      {/* Delivery & Payment Terms */}
+      {quotation.deliveryTerms && (
+        <div className="text-sm text-gray-600 border-t border-gray-100 pt-6 mt-6">
+          <div className="font-medium mb-1">Condiciones de entrega y pago</div>
+          <p>{quotation.deliveryTerms}</p>
+        </div>
+      )}
+      
       {/* Footer */}
       <div className="mt-12 pt-6 border-t text-xs text-gray-500 text-center">
         <div>{companyInfo.name} | {companyInfo.address}</div>

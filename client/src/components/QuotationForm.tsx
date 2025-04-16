@@ -21,7 +21,11 @@ export default function QuotationForm({ onFormDataChange }: QuotationFormProps) 
   const { toast } = useToast();
   
   // Get initial quotation number from API
-  const { data: quotationNumberData } = useQuery({
+  interface QuotationNumberResponse {
+    quotationNumber: string;
+  }
+  
+  const { data: quotationNumberData } = useQuery<QuotationNumberResponse>({
     queryKey: ["/api/generate-quotation-number"],
   });
   
