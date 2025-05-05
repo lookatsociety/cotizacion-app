@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/card";
 import { AlertCircle } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import spekLogoPath from "@assets/IMG-20250408-WA0063.jpg";
+import spekLogoPath from "../assets/spek-logo.jpg";
 
 export default function Login() {
   const { googleLogin, isAuthenticated, isLoading } = useAuth();

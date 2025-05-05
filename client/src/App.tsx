@@ -6,7 +6,7 @@ import Quotations from "@/pages/Quotations";
 import Login from "@/pages/Login";
 import NotFound from "@/pages/not-found";
 import { AuthProvider, useAuth } from "@/lib/auth";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import SidebarLayout from "@/components/SidebarLayout";
 import { FileText } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -97,11 +97,21 @@ function Router() {
 }
 
 function App() {
+  const [message, setMessage] = useState('')
+
+  const fetchMessage = async () => {
+    const response = await fetch('/api/hello')
+    const data = await response.json()
+    setMessage(data.message)
+  }
+
   return (
     <ThemeProvider>
       <AuthProvider>
         <Router />
         <Toaster />
+        <button onClick={fetchMessage}>Get Message</button>
+        {message && <p>{message}</p>}
       </AuthProvider>
     </ThemeProvider>
   );

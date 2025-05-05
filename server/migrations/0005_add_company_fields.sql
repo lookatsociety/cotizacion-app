@@ -1,0 +1,3 @@
+ALTER TABLE company_info
+ADD COLUMN IF NOT EXISTS website TEXT,
+ADD COLUMN IF NOT EXISTS representative TEXT; 

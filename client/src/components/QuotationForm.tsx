@@ -11,13 +11,16 @@ import { Form } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import TemplateSelectionModal from "./TemplateSelectionModal";
 import { useToast } from "@/hooks/use-toast";
+import { CompanyInfo } from "@shared/schema";
 
 interface QuotationFormProps {
   onFormDataChange: (data: QuotationFormData) => void;
+  companyInfo?: CompanyInfo;
 }
 
-export default function QuotationForm({ onFormDataChange }: QuotationFormProps) {
+export default function QuotationForm({ onFormDataChange, companyInfo }: QuotationFormProps) {
   const [isTemplateModalOpen, setIsTemplateModalOpen] = useState(false);
+  const [currentCompanyInfo, setCurrentCompanyInfo] = useState(companyInfo);
   const { toast } = useToast();
   
   // Get initial quotation number from API
@@ -29,37 +32,46 @@ export default function QuotationForm({ onFormDataChange }: QuotationFormProps) 
     queryKey: ["/api/generate-quotation-number"],
   });
   
-  // Setup form with default values
+  // Actualizar cuando cambie la información de la empresa
+  useEffect(() => {
+    setCurrentCompanyInfo(companyInfo);
+  }, [companyInfo]);
+
   const form = useForm<QuotationFormData>({
     resolver: zodResolver(quotationFormSchema),
     defaultValues: {
       quotationNumber: "",
-      date: new Date().toISOString().split("T")[0],
+      date: new Date().toISOString().split('T')[0],
       validUntil: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString().split("T")[0],
       customerName: "",
       customerEmail: "",
       customerPhone: "",
       customerAddress: "",
       projectName: "",
+      template: "professional",
+      items: [],
       subtotal: 0,
       taxRate: 16,
       taxAmount: 0,
       total: 0,
       notes: "Esta cotización es válida por 30 días a partir de la fecha de emisión. Los precios no incluyen costos adicionales que puedan surgir durante el desarrollo del proyecto.",
       deliveryTerms: "Entrega en sitio acordado. Pago 50% anticipo, 50% contra entrega. Tiempo de entrega estimado: 15 días hábiles.",
-      template: "professional",
-      items: [
-        {
-          name: "",
-          description: "",
-          image: "",
-          quantity: 1,
-          price: 0,
-          total: 0,
-        },
-      ],
-    },
+      companyName: currentCompanyInfo?.name || "",
+      companyEmail: currentCompanyInfo?.email || "",
+      companyPhone: currentCompanyInfo?.phone || "",
+      companyAddress: currentCompanyInfo?.address || "",
+    }
   });
+  
+  // Actualizar el formulario cuando cambie la información de la empresa
+  useEffect(() => {
+    if (currentCompanyInfo) {
+      form.setValue("companyName", currentCompanyInfo.name);
+      form.setValue("companyEmail", currentCompanyInfo.email);
+      form.setValue("companyPhone", currentCompanyInfo.phone);
+      form.setValue("companyAddress", currentCompanyInfo.address);
+    }
+  }, [currentCompanyInfo, form]);
   
   // Update form when quotation number is fetched
   useEffect(() => {

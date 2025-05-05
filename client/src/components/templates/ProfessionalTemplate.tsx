@@ -1,25 +1,36 @@
 import { QuotationWithItems } from "@shared/schema";
 import spekLogo from "@/assets/images/spek_logo.png";
 
+interface CompanyInfo {
+  name: string;
+  email: string;
+  phone: string;
+  address: string;
+  website?: string;
+  representative?: string;
+}
+
 interface ProfessionalTemplateProps {
   quotation: QuotationWithItems;
-  companyInfo?: {
-    name: string;
-    email: string;
-    phone: string;
-    address: string;
-  };
+  companyInfo?: CompanyInfo;
 }
+
+const defaultCompanyInfo: CompanyInfo = {
+  name: "Servicios y Productos Especializados Krapsol (S.P.E.K) S.A. de C.V.",
+  email: "vgalvan@spekmx.com",
+  phone: "81 1991 1723",
+  address: "www.spekmx.com",
+  representative: "Ing. Victor Galván Santoyo",
+  website: "www.spekmx.com",
+};
 
 export default function ProfessionalTemplate({ 
   quotation, 
-  companyInfo = {
-    name: "Servicios y Productos Especializados Krapsol (S.P.E.K) S.A. de C.V.",
-    email: "vgalvan@spekmx.com",
-    phone: "81 1991 1723",
-    address: "www.spekmx.com",
-  }
+  companyInfo,
 }: ProfessionalTemplateProps) {
+  // Usar la información de la empresa proporcionada o los valores por defecto
+  const company = companyInfo || defaultCompanyInfo;
+
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat('es-MX', {
       style: 'currency',
@@ -55,6 +66,9 @@ export default function ProfessionalTemplate({
         <div>
           <div className="text-xl font-bold text-primary-600 text-right">FOLIO</div>
           <div className="text-neutral-800 font-mono text-right">#{quotation.quotationNumber}</div>
+          <div className="text-sm text-neutral-600 mt-2 text-right">
+            Fecha: {formatDate(quotation.date.toString())}
+          </div>
         </div>
       </div>
       
@@ -70,37 +84,24 @@ export default function ProfessionalTemplate({
         
         <div>
           <h3 className="text-xs font-medium text-neutral-500 uppercase mb-1">De</h3>
-          <div className="text-neutral-800 font-bold text-lg">SPEK</div>
-          <div className="text-sm text-neutral-800">Ing. Victor Galván Santoyo</div>
-          <div className="text-sm text-neutral-600">Servicios y Productos Especializados Krapsol (S.P.E.K) S.A. de C.V.</div>
-          <div className="text-sm text-neutral-600">{companyInfo.phone}</div>
-          <div className="text-sm text-neutral-600">{companyInfo.email} &nbsp;&nbsp;&nbsp;&nbsp; {companyInfo.address}</div>
-        </div>
-      </div>
-      
-      <div className="grid grid-cols-2 gap-8 mb-8">
-        <div>
-          <h3 className="text-xs font-medium text-neutral-500 uppercase mb-1">Fecha de Emisión</h3>
-          <div className="text-sm text-neutral-800">{formatDate(quotation.date as unknown as string)}</div>
-        </div>
-        
-        <div>
-          <h3 className="text-xs font-medium text-neutral-500 uppercase mb-1">Válido Hasta</h3>
-          <div className="text-sm text-neutral-800">
-            {quotation.validUntil ? formatDate(quotation.validUntil as unknown as string) : "30 días después de la emisión"}
-          </div>
+          <div className="text-neutral-800 font-medium">{company.name}</div>
+          {company.representative && <div className="text-sm text-neutral-600">{company.representative}</div>}
+          <div className="text-sm text-neutral-600">{company.email}</div>
+          <div className="text-sm text-neutral-600">{company.phone}</div>
+          <div className="text-sm text-neutral-600 mt-1">{company.address}</div>
+          {company.website && <div className="text-sm text-neutral-600">{company.website}</div>}
         </div>
       </div>
       
       {/* Items Table */}
       <div className="mb-8">
-        <table className="min-w-full">
+        <table className="w-full">
           <thead>
             <tr className="border-b border-gray-200">
-              <th className="text-left py-3 px-4 text-xs font-medium text-neutral-500 uppercase tracking-wider">Descripción</th>
-              <th className="text-center py-3 px-4 text-xs font-medium text-neutral-500 uppercase tracking-wider">Cant.</th>
-              <th className="text-right py-3 px-4 text-xs font-medium text-neutral-500 uppercase tracking-wider">Precio</th>
-              <th className="text-right py-3 px-4 text-xs font-medium text-neutral-500 uppercase tracking-wider">Total</th>
+              <th className="py-3 px-4 text-left">Descripción</th>
+              <th className="py-3 px-4 text-center">Cantidad</th>
+              <th className="py-3 px-4 text-right">Precio</th>
+              <th className="py-3 px-4 text-right">Total</th>
             </tr>
           </thead>
           <tbody>
@@ -124,7 +125,7 @@ export default function ProfessionalTemplate({
                     </div>
                   )}
                 </td>
-                <td className="py-4 px-4 text-center"><span className="font-mono mr-1 text-neutral-500">#{index + 1}</span> {item.quantity}</td>
+                <td className="py-4 px-4 text-center">{item.quantity}</td>
                 <td className="py-4 px-4 text-right">{formatCurrency(Number(item.price))}</td>
                 <td className="py-4 px-4 text-right font-medium">{formatCurrency(Number(item.total))}</td>
               </tr>
@@ -153,15 +154,15 @@ export default function ProfessionalTemplate({
       
       {/* Notes */}
       {quotation.notes && (
-        <div className="bg-gray-50 p-4 rounded-md text-sm text-neutral-600 mb-4">
+        <div className="bg-gray-50 p-4 rounded-md text-sm text-neutral-600">
           <h3 className="font-medium text-neutral-800 mb-2">Notas</h3>
           <p>{quotation.notes}</p>
         </div>
       )}
       
-      {/* Delivery & Payment Terms */}
+      {/* Delivery Terms */}
       {quotation.deliveryTerms && (
-        <div className="bg-gray-50 p-4 rounded-md text-sm text-neutral-600">
+        <div className="bg-gray-50 p-4 rounded-md text-sm text-neutral-600 mt-4">
           <h3 className="font-medium text-neutral-800 mb-2">Condiciones de entrega y pago</h3>
           <p>{quotation.deliveryTerms}</p>
         </div>
@@ -169,7 +170,7 @@ export default function ProfessionalTemplate({
       
       {/* Footer */}
       <div className="mt-8 text-center text-sm text-neutral-500 border-t border-gray-100 pt-6">
-        <p>¿Preguntas? Contáctenos: {companyInfo.email} | {companyInfo.phone}</p>
+        <p>¿Preguntas? Contáctenos: {company.email} | {company.phone}</p>
         <p className="mt-1">Gracias por su preferencia.</p>
       </div>
     </div>

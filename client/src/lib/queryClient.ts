@@ -1,9 +1,16 @@
 import { QueryClient, QueryFunction } from "@tanstack/react-query";
+import { auth } from "./firebase";
 
 async function throwIfResNotOk(res: Response) {
   if (!res.ok) {
-    const text = (await res.text()) || res.statusText;
-    throw new Error(`${res.status}: ${text}`);
+    let error;
+    try {
+      const data = await res.json();
+      error = new Error(data.message || res.statusText);
+    } catch {
+      error = new Error(res.statusText);
+    }
+    throw error;
   }
 }
 
@@ -12,9 +19,15 @@ export async function apiRequest(
   url: string,
   data?: unknown | undefined,
 ): Promise<Response> {
+  const token = await auth.currentUser?.getIdToken();
+  const headers: Record<string, string> = {
+    ...(data ? { "Content-Type": "application/json" } : {}),
+    ...(token ? { "Authorization": `Bearer ${token}` } : {}),
+  };
+
   const res = await fetch(url, {
     method,
-    headers: data ? { "Content-Type": "application/json" } : {},
+    headers,
     body: data ? JSON.stringify(data) : undefined,
     credentials: "include",
   });
@@ -29,7 +42,11 @@ export const getQueryFn: <T>(options: {
 }) => QueryFunction<T> =
   ({ on401: unauthorizedBehavior }) =>
   async ({ queryKey }) => {
+    const token = await auth.currentUser?.getIdToken();
+    const headers: Record<string, string> = token ? { "Authorization": `Bearer ${token}` } : {};
+
     const res = await fetch(queryKey[0] as string, {
+      headers,
       credentials: "include",
     });
 

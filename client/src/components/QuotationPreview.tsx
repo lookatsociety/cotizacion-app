@@ -1,5 +1,5 @@
 import { useCallback, useRef } from "react";
-import { QuotationFormData, QuotationWithItems } from "@shared/schema";
+import { QuotationFormData, CompanyInfo } from "@shared/schema";
 import ProfessionalTemplate from "./templates/ProfessionalTemplate";
 import MinimalistTemplate from "./templates/MinimalistTemplate";
 import CreativeTemplate from "./templates/CreativeTemplate";
@@ -9,36 +9,51 @@ import { generatePdf } from "@/lib/generatePdf";
 
 interface QuotationPreviewProps {
   quotation: QuotationFormData | null;
+  companyInfo?: CompanyInfo;
 }
 
-export default function QuotationPreview({ quotation }: QuotationPreviewProps) {
+export default function QuotationPreview({ quotation, companyInfo }: QuotationPreviewProps) {
   const printFrameRef = useRef<HTMLIFrameElement>(null);
   
   const getTemplateComponent = useCallback(() => {
     if (!quotation) return null;
     
     // Convert to format expected by templates
-    const quotationWithItems = {
+    const quotationWithItems: QuotationWithItems = {
       ...quotation,
       items: quotation.items || [],
       date: quotation.date ? new Date(quotation.date) : new Date(),
       validUntil: quotation.validUntil ? new Date(quotation.validUntil) : null,
-      id: 0,  // Campos requeridos por QuotationWithItems pero no usados en visualización
+      id: 0,
       userId: 0,
       customerId: null,
       status: 'draft',
-    } as QuotationWithItems;
+      customerName: quotation.customerName || null,
+      customerEmail: quotation.customerEmail || null,
+      customerPhone: quotation.customerPhone || null,
+      customerAddress: quotation.customerAddress || null,
+    };
+
+    // Asegurarse de que la información de la empresa se pase correctamente
+    const company = companyInfo ? {
+      name: companyInfo.name,
+      email: companyInfo.email,
+      phone: companyInfo.phone,
+      address: companyInfo.address,
+      website: companyInfo.website,
+      representative: companyInfo.representative,
+    } : undefined;
 
     switch (quotation.template) {
       case "minimalist":
-        return <MinimalistTemplate quotation={quotationWithItems} />;
+        return <MinimalistTemplate quotation={quotationWithItems} companyInfo={company} />;
       case "creative":
-        return <CreativeTemplate quotation={quotationWithItems} />;
+        return <CreativeTemplate quotation={quotationWithItems} companyInfo={company} />;
       case "professional":
       default:
-        return <ProfessionalTemplate quotation={quotationWithItems} />;
+        return <ProfessionalTemplate quotation={quotationWithItems} companyInfo={company} />;
     }
-  }, [quotation]);
+  }, [quotation, companyInfo]);
   
   const renderTemplate = useCallback(() => {
     if (!quotation) {
@@ -56,23 +71,14 @@ export default function QuotationPreview({ quotation }: QuotationPreviewProps) {
   }, [quotation, getTemplateComponent]);
 
   const handlePrintPreview = () => {
-    // Una solución muy simple usando una ventana nueva para imprimir
-    // Esto evita todos los problemas que hemos estado experimentando
-    
     if (!quotation) return;
     
-    // Creamos una nueva ventana para la impresión
     const printWindow = window.open('', '_blank');
     if (!printWindow) return;
     
-    // Obtenemos el componente de la plantilla actual
     const templateComponent = getTemplateComponent();
     if (!templateComponent) return;
     
-    // Obtenemos el contenido HTML del template
-    const templateDiv = document.createElement('div');
-    
-    // Estilos CSS esenciales para la plantilla
     printWindow.document.write(`
       <!DOCTYPE html>
       <html>
@@ -81,87 +87,6 @@ export default function QuotationPreview({ quotation }: QuotationPreviewProps) {
         <style>
           @page { size: letter; margin: 1cm; }
           body { margin: 0; padding: 20px; font-family: Arial, sans-serif; }
-          /* Estilos para la cotización */
-          .p-8 { padding: 2rem; }
-          .bg-white { background-color: white; }
-          .rounded-lg { border-radius: 0.5rem; }
-          .shadow-md { box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
-          .border-2 { border-width: 2px; border-style: solid; }
-          .border-black { border-color: black; }
-          
-          /* Flexbox y Grid */
-          .flex { display: flex; }
-          .grid { display: grid; }
-          .grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-          .gap-8 { gap: 2rem; }
-          .items-start { align-items: flex-start; }
-          .items-center { align-items: center; }
-          .justify-between { justify-content: space-between; }
-          .justify-start { justify-content: flex-start; }
-          
-          /* Espaciado */
-          .mb-8 { margin-bottom: 2rem; }
-          .mb-4 { margin-bottom: 1rem; }
-          .mb-2 { margin-bottom: 0.5rem; }
-          .mb-1 { margin-bottom: 0.25rem; }
-          .mt-8 { margin-top: 2rem; }
-          .mt-3 { margin-top: 0.75rem; }
-          .mt-2 { margin-top: 0.5rem; }
-          .mt-1 { margin-top: 0.25rem; }
-          .mr-3 { margin-right: 0.75rem; }
-          .mr-1 { margin-right: 0.25rem; }
-          
-          /* Tipografía */
-          .text-xs { font-size: 0.75rem; }
-          .text-sm { font-size: 0.875rem; }
-          .text-base { font-size: 1rem; }
-          .text-lg { font-size: 1.125rem; }
-          .text-xl { font-size: 1.25rem; }
-          .font-bold { font-weight: 700; }
-          .font-semibold { font-weight: 600; }
-          .font-medium { font-weight: 500; }
-          .uppercase { text-transform: uppercase; }
-          .text-center { text-align: center; }
-          .text-right { text-align: right; }
-          .text-left { text-align: left; }
-          .font-mono { font-family: monospace; }
-          
-          /* Colores de texto */
-          .text-neutral-800 { color: #262626; }
-          .text-neutral-600 { color: #525252; }
-          .text-neutral-500 { color: #737373; }
-          .text-primary-600 { color: #2563eb; }
-          
-          /* Bordes */
-          .border-t { border-top-width: 1px; border-top-style: solid; }
-          .border-b { border-bottom-width: 1px; border-bottom-style: solid; }
-          .border-gray-200 { border-color: #e5e7eb; }
-          .border-gray-100 { border-color: #f3f4f6; }
-          
-          /* Fondos */
-          .bg-gray-50 { background-color: #f9fafb; }
-          .rounded-md { border-radius: 0.375rem; }
-          
-          /* Tablas */
-          table { width: 100%; border-collapse: collapse; }
-          th, td { padding: 0.75rem 1rem; }
-          
-          /* Imágenes */
-          .object-contain { object-fit: contain; }
-          .object-cover { object-fit: cover; }
-          .h-40 { height: 10rem; }
-          .w-16 { width: 4rem; }
-          .h-16 { height: 4rem; }
-          .w-64 { width: 16rem; }
-          
-          /* Estilos adicionales necesarios */
-          .p-4 { padding: 1rem; }
-          .px-4 { padding-left: 1rem; padding-right: 1rem; }
-          .py-2 { padding-top: 0.5rem; padding-bottom: 0.5rem; }
-          .py-3 { padding-top: 0.75rem; padding-bottom: 0.75rem; }
-          .py-4 { padding-top: 1rem; padding-bottom: 1rem; }
-          .pt-6 { padding-top: 1.5rem; }
-          .relative { position: relative; }
           .quotation-template { 
             border: 2px solid black;
             border-radius: 8px;
@@ -172,27 +97,43 @@ export default function QuotationPreview({ quotation }: QuotationPreviewProps) {
             box-sizing: border-box;
             margin: 0 auto;
           }
+          /* Estilos adicionales necesarios */
+          .flex { display: flex; }
+          .justify-between { justify-content: space-between; }
+          .items-start { align-items: flex-start; }
+          .mb-8 { margin-bottom: 2rem; }
+          .text-sm { font-size: 0.875rem; }
+          .text-neutral-600 { color: #525252; }
+          .mt-3 { margin-top: 0.75rem; }
+          .font-bold { font-weight: bold; }
+          .text-right { text-align: right; }
+          .grid { display: grid; }
+          .grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+          .gap-8 { gap: 2rem; }
+          table { width: 100%; border-collapse: collapse; }
+          th, td { padding: 0.75rem 1rem; text-align: left; }
+          .border-t { border-top: 1px solid #e5e7eb; }
+          .text-center { text-align: center; }
+          .pt-6 { padding-top: 1.5rem; }
         </style>
       </head>
       <body>
         <div class="quotation-template">
     `);
     
-    // Agregamos el HTML del componente de cotización actual
-    let templateHTML = '';
+    // Agregamos el contenido específico según la plantilla
     switch (quotation.template) {
       case "minimalist":
-        templateHTML = `
-          <h1>Cotización # ${quotation.quotationNumber}</h1>
+        printWindow.document.write(`
           <div class="flex justify-between items-start mb-8">
             <div>
-              <p>SPEK Industrial</p>
-              <p>Proyecto: ${quotation.projectName || "Servicios SPEK Industrial"}</p>
-            </div>
-            <div>
-              <p>Fecha: ${new Date(quotation.date || new Date()).toLocaleDateString('es-MX')}</p>
+              <h1>Cotización #${quotation.quotationNumber}</h1>
+              <p class="text-sm text-neutral-600 mt-3">
+                Fecha: ${new Date(quotation.date).toLocaleDateString('es-MX')}
+              </p>
             </div>
           </div>
+          
           <div class="grid grid-cols-2 gap-8 mb-8">
             <div>
               <h3>Para</h3>
@@ -203,67 +144,73 @@ export default function QuotationPreview({ quotation }: QuotationPreviewProps) {
             </div>
             <div>
               <h3>De</h3>
-              <p><b>SPEK</b></p>
-              <p>Ing. Victor Galván Santoyo</p>
-              <p>Servicios y Productos Especializados Krapsol (S.P.E.K) S.A. de C.V.</p>
-              <p>81 1991 1723</p>
-              <p>vgalvan@spekmx.com &nbsp;&nbsp;&nbsp;&nbsp; www.spekmx.com</p>
+              <p><strong>${companyInfo?.name || ''}</strong></p>
+              <p>${companyInfo?.representative || ''}</p>
+              <p>${companyInfo?.email || ''}</p>
+              <p>${companyInfo?.phone || ''}</p>
+              <p>${companyInfo?.address || ''}</p>
+              <p>${companyInfo?.website || ''}</p>
             </div>
           </div>
-          <table border="1" style="width:100%; border-collapse: collapse;">
-            <tr>
-              <th>Descripción</th>
-              <th>Cant.</th>
-              <th>Precio</th>
-              <th>Total</th>
-            </tr>
-            ${quotation.items?.map((item, index) => `
+          
+          <table border="1">
+            <thead>
               <tr>
-                <td>
-                  <p><b>${item.name}</b></p>
-                  <p>${item.description || ''}</p>
-                </td>
-                <td style="text-align:center;">#${index + 1} ${item.quantity}</td>
-                <td style="text-align:right;">${new Intl.NumberFormat('es-MX', {style: 'currency', currency: 'MXN'}).format(Number(item.price))}</td>
-                <td style="text-align:right;"><b>${new Intl.NumberFormat('es-MX', {style: 'currency', currency: 'MXN'}).format(Number(item.total))}</b></td>
+                <th>Descripción</th>
+                <th>Cantidad</th>
+                <th>Precio</th>
+                <th>Total</th>
               </tr>
-            `).join('')}
+            </thead>
+            <tbody>
+              ${quotation.items?.map((item, index) => `
+                <tr>
+                  <td>
+                    <strong>${item.name}</strong><br>
+                    ${item.description || ''}
+                  </td>
+                  <td style="text-align: center;">${item.quantity}</td>
+                  <td style="text-align: right;">${new Intl.NumberFormat('es-MX', {style: 'currency', currency: 'MXN'}).format(Number(item.price))}</td>
+                  <td style="text-align: right;"><strong>${new Intl.NumberFormat('es-MX', {style: 'currency', currency: 'MXN'}).format(Number(item.total))}</strong></td>
+                </tr>
+              `).join('')}
+            </tbody>
           </table>
+          
           <div style="margin-top: 2rem; text-align: right;">
             <p>Subtotal: ${new Intl.NumberFormat('es-MX', {style: 'currency', currency: 'MXN'}).format(Number(quotation.subtotal))}</p>
-            <p>IVA (${Number(quotation.taxRate)}%): ${new Intl.NumberFormat('es-MX', {style: 'currency', currency: 'MXN'}).format(Number(quotation.taxAmount))}</p>
-            <p><b>Total: ${new Intl.NumberFormat('es-MX', {style: 'currency', currency: 'MXN'}).format(Number(quotation.total))}</b></p>
+            <p>IVA (${quotation.taxRate}%): ${new Intl.NumberFormat('es-MX', {style: 'currency', currency: 'MXN'}).format(Number(quotation.taxAmount))}</p>
+            <p><strong>Total: ${new Intl.NumberFormat('es-MX', {style: 'currency', currency: 'MXN'}).format(Number(quotation.total))}</strong></p>
           </div>
+          
           ${quotation.notes ? `
             <div style="margin-top: 1rem; padding: 1rem; background-color: #f9fafb; border-radius: 0.375rem;">
               <h3>Notas</h3>
               <p>${quotation.notes}</p>
             </div>
           ` : ''}
-          ${quotation.deliveryTerms ? `
-            <div style="margin-top: 1rem; padding: 1rem; background-color: #f9fafb; border-radius: 0.375rem;">
-              <h3>Condiciones de entrega y pago</h3>
-              <p>${quotation.deliveryTerms}</p>
-            </div>
-          ` : ''}
-          <div style="margin-top: 2rem; text-align: center; padding-top: 1.5rem; border-top: 1px solid #f3f4f6;">
-            <p>¿Preguntas? Contáctenos: vgalvan@spekmx.com | 81 1991 1723</p>
-            <p>Gracias por su preferencia.</p>
+          
+          <div class="border-t text-center pt-6" style="margin-top: 2rem;">
+            <p>¿Preguntas? Contáctenos: ${companyInfo?.email || ''} | ${companyInfo?.phone || ''}</p>
+            <p>Gracias por su preferencia</p>
           </div>
-        `;
+        `);
         break;
+      
       default:
-        templateHTML = `
-          <h1>Cotización # ${quotation.quotationNumber}</h1>
+        printWindow.document.write(`
           <div class="flex justify-between items-start mb-8">
             <div>
-              <p>SPEK Industrial</p>
-              <p>Proyecto: ${quotation.projectName || "Servicios SPEK Industrial"}</p>
-            </div>
-            <div>
-              <p>Fecha: ${new Date(quotation.date || new Date()).toLocaleDateString('es-MX')}</p>
+              <h1>Cotización #${quotation.quotationNumber}</h1>
+              <p class="text-sm text-neutral-600 mt-3">
+                Por medio de la presente le presentamos a usted la cotización de los trabajos solicitados
+              </p>
+              <p class="mt-2">
+                <strong>Proyecto:</strong> ${quotation.projectName || ""}
+              </p>
             </div>
           </div>
+          
           <div class="grid grid-cols-2 gap-8 mb-8">
             <div>
               <h3>Para</h3>
@@ -274,65 +221,65 @@ export default function QuotationPreview({ quotation }: QuotationPreviewProps) {
             </div>
             <div>
               <h3>De</h3>
-              <p><b>SPEK</b></p>
-              <p>Ing. Victor Galván Santoyo</p>
-              <p>Servicios y Productos Especializados Krapsol (S.P.E.K) S.A. de C.V.</p>
-              <p>81 1991 1723</p>
-              <p>vgalvan@spekmx.com &nbsp;&nbsp;&nbsp;&nbsp; www.spekmx.com</p>
+              <p><strong>${companyInfo?.name || ''}</strong></p>
+              <p>${companyInfo?.representative || ''}</p>
+              <p>${companyInfo?.email || ''}</p>
+              <p>${companyInfo?.phone || ''}</p>
+              <p>${companyInfo?.address || ''}</p>
+              <p>${companyInfo?.website || ''}</p>
             </div>
           </div>
-          <table border="1" style="width:100%; border-collapse: collapse;">
-            <tr>
-              <th>Descripción</th>
-              <th>Cant.</th>
-              <th>Precio</th>
-              <th>Total</th>
-            </tr>
-            ${quotation.items?.map((item, index) => `
+          
+          <table border="1">
+            <thead>
               <tr>
-                <td>
-                  <p><b>${item.name}</b></p>
-                  <p>${item.description || ''}</p>
-                </td>
-                <td style="text-align:center;">#${index + 1} ${item.quantity}</td>
-                <td style="text-align:right;">${new Intl.NumberFormat('es-MX', {style: 'currency', currency: 'MXN'}).format(Number(item.price))}</td>
-                <td style="text-align:right;"><b>${new Intl.NumberFormat('es-MX', {style: 'currency', currency: 'MXN'}).format(Number(item.total))}</b></td>
+                <th>Descripción</th>
+                <th>Cantidad</th>
+                <th>Precio</th>
+                <th>Total</th>
               </tr>
-            `).join('')}
+            </thead>
+            <tbody>
+              ${quotation.items?.map((item, index) => `
+                <tr>
+                  <td>
+                    <strong>${item.name}</strong><br>
+                    ${item.description || ''}
+                  </td>
+                  <td style="text-align: center;">${item.quantity}</td>
+                  <td style="text-align: right;">${new Intl.NumberFormat('es-MX', {style: 'currency', currency: 'MXN'}).format(Number(item.price))}</td>
+                  <td style="text-align: right;"><strong>${new Intl.NumberFormat('es-MX', {style: 'currency', currency: 'MXN'}).format(Number(item.total))}</strong></td>
+                </tr>
+              `).join('')}
+            </tbody>
           </table>
+          
           <div style="margin-top: 2rem; text-align: right;">
             <p>Subtotal: ${new Intl.NumberFormat('es-MX', {style: 'currency', currency: 'MXN'}).format(Number(quotation.subtotal))}</p>
-            <p>IVA (${Number(quotation.taxRate)}%): ${new Intl.NumberFormat('es-MX', {style: 'currency', currency: 'MXN'}).format(Number(quotation.taxAmount))}</p>
-            <p><b>Total: ${new Intl.NumberFormat('es-MX', {style: 'currency', currency: 'MXN'}).format(Number(quotation.total))}</b></p>
+            <p>IVA (${quotation.taxRate}%): ${new Intl.NumberFormat('es-MX', {style: 'currency', currency: 'MXN'}).format(Number(quotation.taxAmount))}</p>
+            <p><strong>Total: ${new Intl.NumberFormat('es-MX', {style: 'currency', currency: 'MXN'}).format(Number(quotation.total))}</strong></p>
           </div>
+          
           ${quotation.notes ? `
             <div style="margin-top: 1rem; padding: 1rem; background-color: #f9fafb; border-radius: 0.375rem;">
               <h3>Notas</h3>
               <p>${quotation.notes}</p>
             </div>
           ` : ''}
-          ${quotation.deliveryTerms ? `
-            <div style="margin-top: 1rem; padding: 1rem; background-color: #f9fafb; border-radius: 0.375rem;">
-              <h3>Condiciones de entrega y pago</h3>
-              <p>${quotation.deliveryTerms}</p>
-            </div>
-          ` : ''}
-          <div style="margin-top: 2rem; text-align: center; padding-top: 1.5rem; border-top: 1px solid #f3f4f6;">
-            <p>¿Preguntas? Contáctenos: vgalvan@spekmx.com | 81 1991 1723</p>
-            <p>Gracias por su preferencia.</p>
+          
+          <div class="border-t text-center pt-6" style="margin-top: 2rem;">
+            <p>¿Preguntas? Contáctenos: ${companyInfo?.email || ''} | ${companyInfo?.phone || ''}</p>
+            <p>Gracias por su preferencia</p>
           </div>
-        `;
+        `);
     }
     
-    printWindow.document.write(templateHTML);
     printWindow.document.write('</div></body></html>');
     printWindow.document.close();
     
-    // Imprimir después de que la ventana esté completamente cargada
     printWindow.onload = () => {
       printWindow.focus();
       printWindow.print();
-      // Cerramos la ventana después de imprimir
       printWindow.onafterprint = () => {
         printWindow.close();
       };
